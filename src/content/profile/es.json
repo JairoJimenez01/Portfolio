@@ -1,0 +1,33 @@
+{
+  "name": "Jairo Jiménez Pruñanosa",
+  "role": "Senior Backend Developer",
+  "keywords": ["PHP", "Python", "IA"],
+  "lead": "Más de cinco años construyendo **APIs** y plataformas críticas con **PHP** y **Python**, aplicando arquitectura limpia e impulsando la adopción responsable de **IA** en equipos de desarrollo.",
+  "location": "Barcelona",
+  "email": "jairojimenezprunanosa@gmail.com",
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/jairo-jim%C3%A9nez-pru%C3%B1anosa/",
+    "malt": "https://www.malt.es/profile/jairojimenezprunanosa",
+    "repository": "https://github.com/JairoJimenez01/Portfolio"
+  },
+  "photo": {
+    "alt": "Retrato de Jairo Jiménez Pruñanosa con traje negro sobre fondo gris"
+  },
+  "cv": {
+    "file": "cv.pdf",
+    "label": "Descargar CV"
+  },
+  "contact": {
+    "title": "¿Construimos algo juntos?",
+    "text": "Abierto a proyectos backend, preferiblemente en remoto, donde la arquitectura y la calidad importen. Respondo en menos de 24 horas."
+  },
+  "languages": [
+    { "name": "Catalán", "level": "Nativo" },
+    { "name": "Español", "level": "Nativo" },
+    { "name": "Inglés", "level": "B2" }
+  ],
+  "seo": {
+    "title": "Jairo Jiménez Pruñanosa · Senior Backend Developer",
+    "description": "Senior Backend Developer: PHP, Python y arquitectura limpia. Experiencia en SaaS inmobiliario y distribución farmacéutica, y adopción responsable de IA."
+  }
+}

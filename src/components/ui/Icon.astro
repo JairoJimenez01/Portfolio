@@ -1,0 +1,26 @@
+---
+import { ICONS, type IconName } from './icons';
+
+/** Icono en línea. Es decorativo: el texto accesible lo aporta el elemento que lo contiene. */
+interface Props {
+  name: IconName;
+  size?: string;
+}
+
+const { name, size = '1.15rem' } = Astro.props;
+const { path, filled = false, strokeWidth = 2.2 } = ICONS[name];
+---
+
+<svg
+  viewBox="0 0 24 24"
+  style={`width:${size};height:${size}`}
+  fill={filled ? 'currentColor' : 'none'}
+  stroke={filled ? undefined : 'currentColor'}
+  stroke-width={filled ? undefined : strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={path}></path>
+</svg>

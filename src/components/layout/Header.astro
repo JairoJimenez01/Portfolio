@@ -1,0 +1,113 @@
+---
+import { getDictionary } from '@/i18n';
+import { navigationItems } from '@/lib/navigation';
+
+/**
+ * Cabecera fija. Con mix-blend-mode: difference el texto blanco se ve negro sobre las bandas
+ * claras y blanco sobre las oscuras, sin necesidad de una barra opaca.
+ */
+const t = getDictionary();
+const items = navigationItems(t);
+---
+
+<header class="header">
+  <div class="header__inner">
+    <a class="header__brand" href="#top">
+      {t.nav.brand}
+    </a>
+    <nav class="header__nav" aria-label={t.nav.sectionsLabel}>
+      {items.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+    <button
+      class="header__menu-button"
+      type="button"
+      data-menu-open
+      aria-controls="menu"
+      aria-expanded="false"
+    >
+      {t.nav.open}
+    </button>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    color: #ffffff;
+    mix-blend-mode: difference;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-left: var(--gutter-l);
+    padding-right: var(--gutter-r);
+    padding-block: 1.1rem;
+  }
+
+  .header__brand {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .header__nav {
+    display: flex;
+    gap: 1.75rem;
+    font-weight: 500;
+  }
+
+  .header__nav a {
+    position: relative;
+    padding-block: 0.25rem;
+  }
+
+  .header__nav a::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .header__nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .header__menu-button {
+    display: none;
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  @media (max-width: 860px) {
+    .header__nav {
+      display: none;
+    }
+
+    .header__menu-button {
+      display: inline-block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header__nav a::after {
+      transition: none;
+    }
+  }
+</style>

@@ -416,3 +416,13 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# --- Portfolio (Astro) ---
+dist/
+.astro/
+test-results/
+playwright-report/
+.env
+.env.*
+# Foto original sin procesar (con metadatos de cámara); la versión optimizada vive en src/assets
+/Foto.JPG

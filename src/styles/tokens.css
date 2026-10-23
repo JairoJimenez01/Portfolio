@@ -1,0 +1,43 @@
+/*
+ * Tokens de diseño: la única fuente de colores, tipografías y ritmos.
+ * Ningún componente escribe un color literal; todos leen estas variables
+ * o las relativas que define cada banda (ver components/ui/Band.astro).
+ *
+ * Punto de corte móvil: 860px. CSS no admite variables en @media, así que cada componente
+ * repite `@media (max-width: 860px)`; el mismo valor está en src/lib/breakpoints.ts.
+ */
+:root {
+  /* Paleta */
+  --paper: #ffffff;
+  --paper-2: #f5f4f9;
+  --ink: #121016;
+  --ink-2: #1b1822;
+  --fg: #121016;
+  --fg-muted: #635f6e;
+  --fg-on-ink: #f4f2f7;
+  --fg-on-ink-muted: #a9a4b5;
+  --accent: #5b3df5;
+  --accent-strong: #4a2fd6;
+  --accent-soft: #b7a8ff;
+  --line: rgb(18 16 22 / 0.1);
+  --line-on-ink: rgb(244 242 247 / 0.12);
+
+  /* Tipografía: las familias las registra Astro en astro.config.ts (API de fuentes) */
+  --font-display: var(--font-sora);
+  --font-body: var(--font-dm-sans);
+  --font-mono: var(--font-plex-mono);
+
+  /* Ritmo y forma */
+  --container: 1200px;
+  --gutter-l: max(clamp(16px, 4vw, 48px), env(safe-area-inset-left, 0px));
+  --gutter-r: max(clamp(16px, 4vw, 48px), env(safe-area-inset-right, 0px));
+  --section-padding: clamp(4rem, 9vw, 8rem);
+  --radius-card: 24px;
+  --radius-pill: 999px;
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-reveal: 700ms;
+
+  color-scheme: light;
+}

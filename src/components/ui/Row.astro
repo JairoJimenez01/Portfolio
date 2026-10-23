@@ -1,0 +1,218 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Fila de lista: marcador circular, título grande, metadatos, descripción y una columna a la
+ * derecha (normalmente etiquetas). La usan Proyectos y Experiencia para que se lean igual.
+ *
+ * - Con `href`, toda la fila es un enlace externo y el marcador es una flecha.
+ * - Sin `href`, el marcador es un punto; `marker="live"` le añade un halo (p. ej. el puesto actual).
+ * - El slot por defecto añade contenido bajo la descripción. No usarlo en filas con enlace:
+ *   un enlace no puede contener otros elementos interactivos.
+ * - El slot "aside" ocupa la columna de la derecha.
+ */
+interface Props {
+  title: string;
+  description: string;
+  /** Datos breves bajo el título (puesto, fechas, lugar). Se muestran separados por "·". */
+  meta?: readonly string[];
+  href?: string;
+  marker?: 'dot' | 'live';
+  /** Elemento contenedor cuando la fila no es un enlace. */
+  as?: 'div' | 'article';
+}
+
+const { title, description, meta, href, marker = 'dot', as = 'div' } = Astro.props;
+const Tag = href ? 'a' : as;
+---
+
+<Tag
+  class:list={['row', { 'row--link': href }]}
+  href={href}
+  target={href ? '_blank' : undefined}
+  rel={href ? 'noopener noreferrer' : undefined}
+>
+  <span class="row__marker" aria-hidden="true">
+    {href ? (
+      <Icon name="arrow" size="1.1rem" />
+    ) : (
+      <span class:list={['row__dot', { 'row__dot--live': marker === 'live' }]} />
+    )}
+  </span>
+  <div class="row__text">
+    <h3 class="row__title">{title}</h3>
+    {meta && meta.length > 0 && (
+      <p class="row__meta">
+        {meta.map((part) => (
+          <span class="row__meta-part">{part}</span>
+        ))}
+      </p>
+    )}
+    <p class="row__description">{description}</p>
+    <slot />
+  </div>
+  {Astro.slots.has('aside') && (
+    <div class="row__aside">
+      <slot name="aside" />
+    </div>
+  )}
+</Tag>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.5rem;
+    padding: 1.75rem 0.75rem;
+    border-bottom: 1px solid var(--rule);
+    transition:
+      background 0.35s,
+      padding-left 0.35s var(--ease-out);
+  }
+
+  .row--link:hover {
+    background: var(--surface-2);
+    padding-left: 1.5rem;
+  }
+
+  .row__marker {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 50%;
+    transition:
+      transform 0.4s var(--ease-out),
+      background 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+
+  .row--link:hover .row__marker {
+    background: var(--contrast);
+    color: var(--on-contrast);
+    border-color: var(--contrast);
+    transform: rotate(45deg);
+  }
+
+  .row__dot {
+    position: relative;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .row__dot--live::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    animation: live-pulse 2.2s var(--ease-out) infinite;
+  }
+
+  @keyframes live-pulse {
+    from {
+      opacity: 0.9;
+      transform: scale(0.6);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(1.9);
+    }
+  }
+
+  .row__text {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+    padding-top: 0.35rem;
+  }
+
+  .row__title {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .row--link:hover .row__title {
+    color: var(--accent);
+  }
+
+  /*
+   * Partes separadas por "·" que solo se parten entre sí, nunca por dentro.
+   * Cada parte lleva su separador delante y se desplaza hacia la izquierda lo que este mide;
+   * el hueco entre partes es justo ese ancho. Así, la primera parte de cada línea deja su
+   * separador fuera del contenedor y overflow: hidden lo recorta.
+   */
+  .row__meta {
+    --separator: 1.6em;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--separator);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .row__meta-part {
+    margin-left: calc(var(--separator) * -1);
+    white-space: nowrap;
+  }
+
+  .row__meta-part::before {
+    content: '·';
+    display: inline-block;
+    width: var(--separator);
+    text-align: center;
+  }
+
+  .row__description {
+    max-width: 56ch;
+    color: var(--muted);
+  }
+
+  /* Proporcional al ancho para que la columna de texto no quede estrecha en portátiles. */
+  .row__aside {
+    max-width: clamp(12rem, 28vw, 24rem);
+    padding-top: 0.6rem;
+  }
+
+  @media (max-width: 860px) {
+    .row {
+      grid-template-columns: 3rem minmax(0, 1fr);
+      gap: 0.75rem 1rem;
+    }
+
+    .row__aside {
+      grid-column: 2;
+      max-width: none;
+      padding-top: 0;
+    }
+
+    .row__aside :global(.tags) {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row,
+    .row__marker,
+    .row__title {
+      transition: none;
+    }
+
+    .row__dot--live::after {
+      animation: none;
+    }
+  }
+</style>

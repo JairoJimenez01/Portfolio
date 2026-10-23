@@ -1,0 +1,176 @@
+---
+import Band from '@/components/ui/Band.astro';
+import Button from '@/components/ui/Button.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { getDictionary } from '@/i18n';
+import type { Profile } from '@/lib/content';
+import { SECTION_IDS } from '@/lib/navigation';
+
+/**
+ * Cierre de la página. El correo es un enlace mailto: para quien tenga cliente de correo,
+ * con un botón de copiar pegado a él para quien use correo web y no lo tenga configurado.
+ */
+interface Props {
+  profile: Profile;
+}
+
+const { profile } = Astro.props;
+const t = getDictionary();
+const TITLE_ID = 'contact-title';
+const EMAIL_ID = 'contact-email';
+const STATUS_ID = 'copy-status';
+---
+
+<Band tone="ink" glow id={SECTION_IDS.contact} labelledBy={TITLE_ID}>
+  <div class="contact" data-reveal="big">
+    <div>
+      <Eyebrow>{t.sections.contact.eyebrow}</Eyebrow>
+      <h2 id={TITLE_ID} class="contact__title">
+        {profile.contact.title}
+      </h2>
+      <p class="contact__text">{profile.contact.text}</p>
+    </div>
+
+    <div class="contact__side">
+      <div class="contact__email">
+        <a class="contact__email-link" id={EMAIL_ID} href={`mailto:${profile.email}`}>
+          {profile.email}
+        </a>
+        <button
+          class="contact__copy"
+          type="button"
+          data-copy
+          data-copy-text={profile.email}
+          data-copy-source={EMAIL_ID}
+          data-copy-status={STATUS_ID}
+          data-copied-message={t.contact.copied}
+          data-fallback-message={t.contact.copyFallback}
+          aria-label={t.contact.copyEmail}
+        >
+          <Icon name="copy" size="1.05rem" />
+        </button>
+      </div>
+      <p class="contact__status" id={STATUS_ID} aria-live="polite"></p>
+      <div class="contact__social">
+        <Button href={profile.links.linkedin} variant="icon" label="LinkedIn" newTab>
+          <Icon name="linkedin" />
+        </Button>
+        <Button href={profile.links.malt} variant="icon" label="Malt" newTab>
+          <Icon name="malt" />
+        </Button>
+      </div>
+    </div>
+  </div>
+</Band>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .contact__title {
+    margin-top: 1rem;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .contact__text {
+    max-width: 40ch;
+    margin-top: 1.25rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+
+  .contact__side {
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  /* Correo y botón de copiar en la misma pastilla, siempre en una sola línea. */
+  .contact__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    max-width: 100%;
+    padding: 0.4rem 0.4rem 0.4rem 1.2rem;
+    border-radius: 16px;
+    background: var(--fg-on-ink);
+    color: var(--ink);
+    font-size: clamp(0.88rem, 3.6vw, 1.05rem);
+    font-weight: 600;
+  }
+
+  .contact__email-link {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-underline-offset: 0.2em;
+    transition: color 0.3s;
+  }
+
+  .contact__email-link:hover {
+    color: var(--accent-strong);
+    text-decoration: underline;
+  }
+
+  .contact__copy {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 0;
+    border-radius: 11px;
+    background: var(--paper-2);
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+      background 0.3s,
+      color 0.3s,
+      transform 0.3s var(--ease-out);
+  }
+
+  .contact__copy:hover {
+    background: var(--accent);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .contact__status {
+    min-height: 1.4em;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-soft);
+  }
+
+  .contact__social {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+
+    /* En móvil, el correo, el aviso de copia y los iconos van centrados, como los de la presentación. */
+    .contact__side {
+      justify-items: center;
+      text-align: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact__email-link,
+    .contact__copy {
+      transition: none;
+    }
+  }
+</style>

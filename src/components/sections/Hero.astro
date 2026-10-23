@@ -1,0 +1,253 @@
+---
+import { getImage } from 'astro:assets';
+import portrait from '@/assets/foto.jpg';
+import Band from '@/components/ui/Band.astro';
+import Button from '@/components/ui/Button.astro';
+import Emphasis from '@/components/ui/Emphasis.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { getDictionary } from '@/i18n';
+import { MOBILE_MEDIA_QUERY } from '@/lib/breakpoints';
+import type { Profile } from '@/lib/content';
+import { SECTION_IDS } from '@/lib/navigation';
+import { revealDelay } from '@/lib/style';
+import { withBase } from '@/lib/urls';
+
+/**
+ * Presentación: quién eres, qué haces y dónde está la prueba, en una pantalla.
+ * En escritorio, texto a la izquierda y foto a la derecha. En móvil, sin foto y centrado.
+ */
+interface Props {
+  profile: Profile;
+}
+
+const { profile } = Astro.props;
+const t = getDictionary();
+
+/** Ancho máximo de la foto en pantalla; el srcset cubre pantallas de densidad 1x y 2x. */
+const PORTRAIT_WIDTH = 420;
+const PORTRAIT_HEIGHT = Math.round((PORTRAIT_WIDTH * portrait.height) / portrait.width);
+const photo = await getImage({
+  src: portrait,
+  widths: [PORTRAIT_WIDTH, 640, PORTRAIT_WIDTH * 2],
+  format: 'webp',
+});
+
+/** GIF transparente de 1×1: en móvil el navegador elige esta fuente y no descarga la foto. */
+const EMPTY_IMAGE =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+---
+
+<Band tone="paper" padding="large" labelledBy="hero-title">
+  <div slot="backdrop" class="dots" data-hero-glow aria-hidden="true"></div>
+
+  <div class="hero">
+    <div class="hero__copy">
+      <Eyebrow step={0}>
+        <span class="hero__role">{profile.role}</span>
+        {profile.keywords.length > 0 && (
+          <>
+            <span class="hero__separator"> · </span>
+            <span>{profile.keywords.join(' · ')}</span>
+          </>
+        )}
+      </Eyebrow>
+      <h1 id="hero-title" class="hero__name" data-reveal style={revealDelay(1)}>
+        {profile.name}
+      </h1>
+      <p class="hero__lead" data-reveal style={revealDelay(2)}>
+        <Emphasis text={profile.lead} />
+      </p>
+      <div class="hero__actions" data-reveal style={revealDelay(3)}>
+        <div class="hero__cta">
+          <Button href={`#${SECTION_IDS.contact}`} variant="primary">
+            {t.hero.talk}
+          </Button>
+        </div>
+        <Button href={withBase(profile.cv.file)} variant="ghost" newTab mobileIcon="download">
+          {profile.cv.label}
+        </Button>
+        <Button href={profile.links.linkedin} variant="icon" label="LinkedIn" newTab>
+          <Icon name="linkedin" />
+        </Button>
+        <Button href={profile.links.malt} variant="icon" label="Malt" newTab>
+          <Icon name="malt" />
+        </Button>
+      </div>
+    </div>
+
+    <figure class="portrait" data-reveal style={revealDelay(2)}>
+      <picture>
+        <source media={MOBILE_MEDIA_QUERY} srcset={EMPTY_IMAGE} />
+        <img
+          src={photo.src}
+          srcset={photo.srcSet.attribute}
+          sizes={`${PORTRAIT_WIDTH}px`}
+          width={PORTRAIT_WIDTH}
+          height={PORTRAIT_HEIGHT}
+          alt={profile.photo.alt}
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
+    </figure>
+  </div>
+</Band>
+
+<style>
+  /* Fondo de puntos: una capa gris fija y una capa de acento enmascarada en la posición del puntero. */
+  .dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    --mx: 52%;
+    --my: 62%;
+  }
+
+  .dots::before,
+  .dots::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.8px);
+    background-size: 26px 26px;
+  }
+
+  .dots::before {
+    --dot: rgb(18 16 22 / 0.16);
+  }
+
+  .dots::after {
+    --dot: var(--accent);
+    -webkit-mask-image: radial-gradient(
+      260px circle at var(--mx) var(--my),
+      #000 0%,
+      transparent 70%
+    );
+    mask-image: radial-gradient(260px circle at var(--mx) var(--my), #000 0%, transparent 70%);
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .hero__name {
+    max-width: 7.5em;
+    margin-top: 1rem;
+    font-size: clamp(2.75rem, 7.5vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+
+  .hero__lead {
+    max-width: 34rem;
+    margin-top: 1.5rem;
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .hero__lead :global(strong) {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 2.25rem;
+  }
+
+  .portrait {
+    justify-self: end;
+    width: min(100%, 420px);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: 28px;
+    background: var(--surface-2);
+    box-shadow: 0 30px 60px -30px rgb(18 16 22 / 0.35);
+    transition:
+      transform 0.6s var(--ease-out),
+      box-shadow 0.6s var(--ease-out);
+  }
+
+  .portrait:hover {
+    transform: translateY(-6px) rotate(-1deg);
+    box-shadow: 0 40px 70px -30px rgb(91 61 245 / 0.4);
+  }
+
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /*
+   * Móvil, siguiendo el patrón de rakkesh.vercel.app: sin foto, texto centrado en una pantalla
+   * completa, acción principal a todo el ancho y una fila de iconos debajo.
+   */
+  @media (max-width: 860px) {
+    .dots {
+      --mx: 50%;
+      --my: 70%;
+    }
+
+    .hero {
+      grid-template-columns: 1fr;
+      align-content: center;
+      min-height: calc(100svh - 12rem);
+      text-align: center;
+    }
+
+    .portrait {
+      display: none;
+    }
+
+    /* Puesto en una línea y tecnologías en otra, para no dejar un "·" colgando al partir. */
+    .hero__role {
+      display: block;
+    }
+
+    .hero__separator {
+      display: none;
+    }
+
+    .hero__name,
+    .hero__lead {
+      margin-inline: auto;
+    }
+
+    .hero__lead {
+      font-size: 1.05rem;
+    }
+
+    .hero__actions {
+      justify-content: center;
+    }
+
+    .hero__cta {
+      flex-basis: 100%;
+    }
+
+    .hero__cta :global(.btn) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .portrait {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,7 @@
+{
+  "name": "Fedefarma B2B",
+  "description": "E-commerce B2B para el abastecimiento directo de farmacias y ERP propio de la primera distribuidora farmacéutica de Cataluña, en evolución continua.",
+  "url": "https://www.fedefarma.com/",
+  "stack": ["PHP", "Laravel", "On-Premise"],
+  "order": 2
+}

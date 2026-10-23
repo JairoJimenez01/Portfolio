@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jairojimenez01.github.io/Portfolio/sitemap-index.xml

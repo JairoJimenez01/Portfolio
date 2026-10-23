@@ -1,0 +1,7 @@
+{
+  "name": "Nester",
+  "description": "SaaS para gestores patrimoniales: administración de propietarios e inquilinos, cobro de rentas, gestión de seguros y facturación.",
+  "url": "https://www.nestersoftware.com/",
+  "stack": ["Python", "FastAPI", "PHP", "AWS"],
+  "order": 1
+}

@@ -1,0 +1,13 @@
+{
+  "company": "Nester",
+  "role": "Full-Stack y Backend Developer",
+  "period": { "start": "2021-10", "end": "2026-02" },
+  "location": "Barcelona · Remoto",
+  "summary": "Llevé un SaaS de gestión inmobiliaria de un monolito legacy a microservicios y construí su API principal en PHP y Python.",
+  "highlights": [
+    "Diseñé la **API REST principal**: autenticación, middlewares y endpoints para varias aplicaciones web.",
+    "Lideré la migración a **microservicios** con DDD y arquitectura hexagonal, con una reducción drástica de los tiempos de respuesta.",
+    "Desplegué la infraestructura en **AWS** con integración y despliegue continuos."
+  ],
+  "stack": ["Python", "FastAPI", "PHP", "AWS"]
+}

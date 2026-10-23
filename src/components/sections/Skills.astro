@@ -1,0 +1,176 @@
+---
+import Band from '@/components/ui/Band.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import { getDictionary } from '@/i18n';
+import type { SkillGroup } from '@/lib/content';
+import { SECTION_IDS } from '@/lib/navigation';
+import { revealDelay } from '@/lib/style';
+
+/**
+ * Habilidades por categoría. Cada categoría enseña sus primeras habilidades y pliega el resto
+ * tras un chip "+N más": el orden del JSON decide cuáles se ven sin desplegar.
+ */
+interface Props {
+  groups: readonly SkillGroup[];
+}
+
+/** Habilidades visibles por categoría antes de desplegar. */
+const VISIBLE_SKILLS = 3;
+
+const { groups } = Astro.props;
+const t = getDictionary();
+const TITLE_ID = 'skills-title';
+---
+
+<Band tone="ink" id={SECTION_IDS.skills} labelledBy={TITLE_ID}>
+  <SectionTitle id={TITLE_ID} title={t.sections.skills.title} meta={t.sections.skills.meta} />
+
+  <div class="skills">
+    {groups.map((group, index) => {
+      const listId = `skills-${index}`;
+      const hiddenCount = group.items.length - VISIBLE_SKILLS;
+      return (
+        <div
+          class="skills__row"
+          data-reveal
+          style={revealDelay(index)}
+          data-expandable={hiddenCount > 0 ? '' : undefined}
+        >
+          <h3 class="skills__category">{group.category}</h3>
+          <ul class="chips" id={listId} aria-label={group.category}>
+            {group.items.map((item, itemIndex) => {
+              const collapsible = itemIndex >= VISIBLE_SKILLS;
+              return (
+                <li
+                  class="chip"
+                  data-collapsible={collapsible ? '' : undefined}
+                  style={collapsible ? `--n:${itemIndex - VISIBLE_SKILLS}` : undefined}
+                >
+                  {item}
+                </li>
+              );
+            })}
+            {hiddenCount > 0 && (
+              <li class="chips__toggle">
+                <button
+                  class="chip chip--toggle"
+                  type="button"
+                  data-expand-toggle
+                  aria-controls={listId}
+                  hidden
+                >
+                  <span data-when="collapsed">
+                    +{hiddenCount} {t.sections.skills.more}
+                  </span>
+                  <span data-when="expanded">{t.sections.skills.less}</span>
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+      );
+    })}
+  </div>
+</Band>
+
+<style>
+  .skills {
+    margin-top: clamp(3rem, 7vw, 6rem);
+    border-top: 1px solid var(--rule);
+  }
+
+  .skills__row {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .skills__category {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  .skills__row:hover .skills__category {
+    color: inherit;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.1rem;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--chip-bg);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition:
+      border-color 0.3s,
+      background 0.3s,
+      color 0.3s,
+      transform 0.3s var(--ease-out);
+  }
+
+  .chip::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.8;
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+    background: var(--surface-2);
+    transform: translateY(-3px);
+  }
+
+  /* Sin JavaScript el botón está oculto: que su <li> tampoco ocupe hueco. */
+  .chips__toggle:has(> [hidden]) {
+    display: none;
+  }
+
+  .chip--toggle {
+    border-style: dashed;
+    background: transparent;
+    color: var(--accent-soft);
+    cursor: pointer;
+  }
+
+  .chip--toggle::before {
+    content: none;
+  }
+
+  .chip--toggle:hover {
+    color: var(--strong);
+  }
+
+  @media (max-width: 860px) {
+    .skills__row {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip,
+    .skills__category {
+      transition: none;
+    }
+  }
+</style>

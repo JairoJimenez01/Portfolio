@@ -1,0 +1,56 @@
+---
+/** Lista de etiquetas pequeñas en monoespaciada (tecnologías de un puesto o proyecto). */
+interface Props {
+  items: readonly string[];
+  label?: string;
+  /** Alinea las etiquetas a la derecha (filas de proyecto en escritorio). */
+  align?: 'start' | 'end';
+}
+
+const { items, label, align = 'start' } = Astro.props;
+---
+
+<ul class:list={['tags', `tags--${align}`]} aria-label={label}>
+  {items.map((item) => (
+    <li class="tag">{item}</li>
+  ))}
+</ul>
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tags--end {
+    justify-content: flex-end;
+  }
+
+  .tag {
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--chip-bg);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    transition:
+      border-color 0.3s,
+      color 0.3s,
+      transform 0.3s var(--ease-out);
+  }
+
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tag {
+      transition: none;
+    }
+  }
+</style>

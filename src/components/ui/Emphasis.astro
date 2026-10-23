@@ -1,0 +1,12 @@
+---
+import { parseEmphasis } from '@/lib/markup';
+
+/** Pinta un texto con marcas **así** como <strong>, sin interpretar HTML. */
+interface Props {
+  text: string;
+}
+
+const segments = parseEmphasis(Astro.props.text);
+---
+
+{segments.map((segment) => (segment.strong ? <strong>{segment.text}</strong> : segment.text))}

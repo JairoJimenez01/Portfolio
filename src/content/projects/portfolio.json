@@ -1,0 +1,7 @@
+{
+  "name": "Este portfolio",
+  "description": "Sitio estático con Astro y TypeScript: datos validados con esquemas, tests unitarios y de navegador, y despliegue continuo en GitHub Pages con acciones fijadas por hash.",
+  "url": "https://github.com/JairoJimenez01/Portfolio",
+  "stack": ["Astro", "TypeScript", "Playwright", "CI/CD"],
+  "order": 3
+}

@@ -1,0 +1,51 @@
+---
+import { revealDelay } from '@/lib/style';
+
+/** Cabecera de sección: titular enorme en mayúsculas y una nota en monoespaciada. */
+interface Props {
+  id: string;
+  title: string;
+  meta?: string;
+}
+
+const { id, title, meta } = Astro.props;
+---
+
+<div class="section-head">
+  <h2 id={id} class="section-title" data-reveal="big">
+    {title}
+  </h2>
+  {meta && (
+    <p class="section-meta" data-reveal style={revealDelay(2)}>
+      {meta}
+    </p>
+  )}
+</div>
+
+<style>
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  /* El tope cabe con "EXPERIENCIA" tanto en 1200px como en 360px. */
+  .section-title {
+    max-width: 100%;
+    font-size: clamp(2.75rem, 11.5vw, 9.5rem);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+  }
+
+  .section-meta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>

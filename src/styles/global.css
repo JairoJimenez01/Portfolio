@@ -1,0 +1,162 @@
+@import './tokens.css';
+
+/* Base mínima: sin frameworks, solo lo que necesita este diseño. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Desplazamiento suave nativo solo si Lenis no está activo (p. ej. sin JavaScript). */
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* El atributo hidden gana siempre, aunque una clase declare otro display. */
+[hidden] {
+  display: none !important;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Enlace "saltar al contenido": invisible hasta que recibe el foco por teclado. */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--gutter-l);
+  z-index: 40;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--fg-on-ink);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/*
+ * Aparición al entrar en pantalla.
+ * El JS añade .is-visible cuando el elemento entra en el viewport (scripts/reveal.ts).
+ * Sin JavaScript no existe la clase .js en <html> y todo se ve desde el principio.
+ */
+[data-reveal] {
+  transition:
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.js [data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.js [data-reveal='big']:not(.is-visible) {
+  transform: translateY(48px);
+}
+
+/*
+ * Bloques desplegables (scripts/expandable.ts).
+ * Solo se pliega lo que el script ha marcado con data-expanded="false": sin JavaScript se ve todo.
+ * Al desplegar, los elementos aparecen escalonados según --n.
+ */
+[data-expandable][data-expanded='false'] [data-collapsible] {
+  display: none;
+}
+
+[data-expandable][data-expanded='true'] [data-collapsible] {
+  animation: expand-in 0.45s var(--ease-out) both;
+  animation-delay: calc(var(--n, 0) * 45ms);
+}
+
+[data-expand-toggle] [data-when='expanded'],
+[data-expanded='true'] [data-expand-toggle] [data-when='collapsed'] {
+  display: none;
+}
+
+[data-expanded='true'] [data-expand-toggle] [data-when='expanded'] {
+  display: inline;
+}
+
+@keyframes expand-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    transition: none;
+  }
+
+  .js [data-reveal]:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-expandable][data-expanded='true'] [data-collapsible] {
+    animation: none;
+  }
+}
