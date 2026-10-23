@@ -1,0 +1,24 @@
+---
+import { revealDelay } from '@/lib/style';
+
+/** Línea pequeña en monoespaciada que precede a un titular. */
+interface Props {
+  step?: number;
+}
+
+const { step = 0 } = Astro.props;
+---
+
+<p class="eyebrow" data-reveal style={revealDelay(step)}>
+  <slot />
+</p>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+</style>

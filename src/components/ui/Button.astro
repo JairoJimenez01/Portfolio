@@ -1,0 +1,155 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+/**
+ * Enlace con aspecto de botón.
+ * - primary: acción principal (relleno oscuro).
+ * - ghost: acción secundaria (solo borde).
+ * - on-ink: para fondos oscuros (relleno claro).
+ * - icon: círculo con un icono; requiere `label` para lectores de pantalla.
+ */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost' | 'on-ink' | 'icon';
+  /** Texto accesible cuando el contenido es solo un icono. */
+  label?: string;
+  /** Abre en una pestaña nueva (enlaces externos y documentos). */
+  newTab?: boolean;
+  /**
+   * En móvil el botón pasa a ser un círculo con este icono. El texto sigue en el HTML,
+   * oculto a la vista, para que el enlace conserve su nombre accesible.
+   */
+  mobileIcon?: IconName;
+}
+
+const { href, variant = 'primary', label, newTab = false, mobileIcon } = Astro.props;
+---
+
+<a
+  class:list={['btn', `btn--${variant}`, { 'btn--mobile-icon': mobileIcon }]}
+  href={href}
+  aria-label={label}
+  target={newTab ? '_blank' : undefined}
+  rel={newTab ? 'noopener noreferrer' : undefined}
+>
+  {mobileIcon ? (
+    <>
+      <span class="btn__icon">
+        <Icon name={mobileIcon} />
+      </span>
+      <span class="btn__text">
+        <slot />
+      </span>
+    </>
+  ) : (
+    <slot />
+  )}
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.9rem 1.6rem;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-pill);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition:
+      transform 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out),
+      background 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -12px rgb(18 16 22 / 0.45);
+  }
+
+  .btn--primary {
+    background: var(--ink);
+    color: var(--fg-on-ink);
+  }
+
+  .btn--primary:hover {
+    background: var(--accent-strong);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    border-color: var(--rule);
+    color: inherit;
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn--on-ink {
+    background: var(--fg-on-ink);
+    color: var(--ink);
+  }
+
+  .btn--on-ink:hover {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  .btn--icon {
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    justify-content: center;
+    background: var(--paper);
+    border-color: var(--rule);
+    color: var(--fg);
+    box-shadow: 0 6px 16px -10px rgb(18 16 22 / 0.4);
+  }
+
+  .btn--icon:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn__icon {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    /* Mismo círculo que .btn--icon. */
+    .btn--mobile-icon {
+      width: 3rem;
+      height: 3rem;
+      padding: 0;
+      justify-content: center;
+      background: var(--paper);
+      border-color: var(--rule);
+      color: var(--fg);
+      box-shadow: 0 6px 16px -10px rgb(18 16 22 / 0.4);
+    }
+
+    .btn--mobile-icon .btn__icon {
+      display: inline-flex;
+    }
+
+    .btn--mobile-icon .btn__text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn {
+      transition: none;
+    }
+  }
+</style>

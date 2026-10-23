@@ -1,0 +1,13 @@
+{
+  "company": "Grup Fedefarma",
+  "role": "Backend Developer",
+  "period": { "start": "2026-02", "end": null },
+  "location": "Gavà, Barcelona",
+  "summary": "Evoluciono el e-commerce B2B y el ERP que abastecen a miles de farmacias, e impulso la adopción responsable de IA en el equipo.",
+  "highlights": [
+    "Implanté un método de trabajo **orientado a IA**: contexto técnico, reglas y directrices centralizadas para usar IA generativa de forma responsable.",
+    "Promoví la exploración de **LLM autoalojados** para garantizar la privacidad del dato, crítica en el sector farmacéutico.",
+    "Desarrollo con **Clean Architecture** y SOLID sobre infraestructura **on-premise**, en coordinación con IT y DevOps."
+  ],
+  "stack": ["PHP", "Laravel", "IA generativa", "On-Premise"]
+}

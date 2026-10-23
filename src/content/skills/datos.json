@@ -1,0 +1,5 @@
+{
+  "category": "Datos",
+  "order": 3,
+  "items": ["SQL", "Caché", "Elasticsearch", "ETL y procesos por lotes"]
+}

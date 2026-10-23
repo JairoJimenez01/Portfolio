@@ -1,0 +1,98 @@
+---
+import Band from '@/components/ui/Band.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import { getDictionary } from '@/i18n';
+import type { Education, Profile } from '@/lib/content';
+import { formatPeriod } from '@/lib/dates';
+import { SECTION_IDS } from '@/lib/navigation';
+import { revealDelay } from '@/lib/style';
+
+/** Formación en tarjetas equivalentes, más una tarjeta de idiomas. */
+interface Props {
+  items: readonly Education[];
+  languages: Profile['languages'];
+}
+
+const { items, languages } = Astro.props;
+const t = getDictionary();
+const TITLE_ID = 'education-title';
+const languagesSummary = languages
+  .map((language) => `${language.name} ${language.level}`)
+  .join(' · ');
+---
+
+<Band tone="paper" id={SECTION_IDS.education} labelledBy={TITLE_ID}>
+  <SectionTitle id={TITLE_ID} title={t.sections.education.title} meta={t.sections.education.meta} />
+
+  <ul class="cards">
+    {items.map((item, index) => (
+      <li class="card" data-reveal style={revealDelay(index)}>
+        <p class="card__when">{formatPeriod(item.period, t.period)}</p>
+        <h3 class="card__title">{item.title}</h3>
+        <p class="card__where">{item.institution}</p>
+      </li>
+    ))}
+    {languages.length > 0 && (
+      <li class="card" data-reveal style={revealDelay(items.length)}>
+        <p class="card__when">{t.sections.education.languages}</p>
+        <h3 class="card__title">{languagesSummary}</h3>
+      </li>
+    )}
+  </ul>
+</Band>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .card {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    padding: 1.75rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    background: var(--surface-2);
+    transition:
+      transform 0.5s var(--ease-out),
+      border-color 0.3s;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .card__when {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+
+  .card__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card__where {
+    color: var(--muted);
+  }
+
+  @media (max-width: 860px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+  }
+</style>

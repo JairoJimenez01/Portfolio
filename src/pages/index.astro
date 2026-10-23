@@ -1,0 +1,36 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Contact from '@/components/sections/Contact.astro';
+import Education from '@/components/sections/Education.astro';
+import Experience from '@/components/sections/Experience.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Projects from '@/components/sections/Projects.astro';
+import Skills from '@/components/sections/Skills.astro';
+import Base from '@/layouts/Base.astro';
+import { getPortfolioData } from '@/lib/content';
+import { personJsonLd } from '@/lib/seo';
+import { absoluteUrl } from '@/lib/urls';
+
+/** La página solo carga los datos y compone las secciones, en el orden en que se leen. */
+const data = await getPortfolioData();
+const { profile } = data;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const jsonLd = personJsonLd({
+  name: profile.name,
+  jobTitle: profile.role,
+  url: absoluteUrl(site, import.meta.env.BASE_URL, '/'),
+  sameAs: [profile.links.linkedin, profile.links.malt],
+  locality: profile.location,
+});
+---
+
+<Base title={profile.seo.title} description={profile.seo.description} jsonLd={jsonLd}>
+  <Hero profile={profile} />
+  <Skills groups={data.skills} />
+  <Experience items={data.experience} />
+  <Projects items={data.projects} />
+  <Education items={data.education} languages={profile.languages} />
+  <Contact profile={profile} />
+  <Footer slot="footer" profile={profile} />
+</Base>

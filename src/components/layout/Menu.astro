@@ -1,0 +1,85 @@
+---
+import { getDictionary } from '@/i18n';
+import { navigationItems } from '@/lib/navigation';
+
+/** Menú a pantalla completa para móvil. El comportamiento está en scripts/menu.ts. */
+const t = getDictionary();
+const items = navigationItems(t);
+---
+
+<nav class="menu" id="menu" data-menu data-open="false" aria-label={t.nav.menuLabel}>
+  <button class="menu__close" type="button" data-menu-close>
+    {t.nav.close}
+  </button>
+  {items.map((item, index) => (
+    <a class="menu__link" href={item.href} style={`--i:${index}`}>
+      {item.label}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: calc(5rem + env(safe-area-inset-top, 0px));
+    padding-bottom: 3rem;
+    padding-left: var(--gutter-l);
+    padding-right: var(--gutter-r);
+    background: var(--ink);
+    color: var(--fg-on-ink);
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+    transition: clip-path 0.6s var(--ease-out);
+  }
+
+  .menu[data-open='true'] {
+    clip-path: inset(0 0 0 0);
+    pointer-events: auto;
+  }
+
+  .menu__close {
+    position: absolute;
+    top: calc(1.1rem + env(safe-area-inset-top, 0px));
+    right: var(--gutter-r);
+    border: 0;
+    background: none;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .menu__link {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 10vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.5s var(--ease-out);
+    transition-delay: calc(var(--i) * 70ms + 150ms);
+  }
+
+  .menu[data-open='true'] .menu__link {
+    opacity: 1;
+    transform: none;
+  }
+
+  .menu__link:hover {
+    color: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu,
+    .menu__link {
+      transition: none;
+    }
+  }
+</style>

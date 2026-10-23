@@ -1,0 +1,92 @@
+---
+/**
+ * Banda a ancho completo con fondo claro ("paper") u oscuro ("ink").
+ * Define los tokens relativos que leen los componentes hijos (--rule, --muted, --strong,
+ * --surface-2, --chip-bg, --contrast, --on-contrast): así un componente no sabe sobre qué
+ * fondo está y cambiar una sección de tono es cambiar una prop.
+ */
+interface Props {
+  tone: 'paper' | 'ink';
+  id?: string;
+  labelledBy?: string;
+  /** Degradado violeta en la parte superior (banda de contacto). */
+  glow?: boolean;
+  /** Altura del relleno vertical. */
+  padding?: 'default' | 'large' | 'compact';
+  as?: 'section' | 'footer' | 'div';
+}
+
+const {
+  tone,
+  id,
+  labelledBy,
+  glow = false,
+  padding = 'default',
+  as: Tag = 'section',
+} = Astro.props;
+---
+
+<Tag
+  id={id}
+  aria-labelledby={labelledBy}
+  class:list={['band', `band--${tone}`, { 'band--glow': glow }]}
+>
+  <slot name="backdrop" />
+  <div class:list={['band__inner', `band__inner--${padding}`]}>
+    <slot />
+  </div>
+</Tag>
+
+<style>
+  .band {
+    position: relative;
+    width: 100%;
+    overflow: clip;
+  }
+
+  .band--paper {
+    background: var(--paper);
+    color: var(--fg);
+    --rule: var(--line);
+    --muted: var(--fg-muted);
+    --strong: var(--fg);
+    --surface-2: var(--paper-2);
+    --chip-bg: var(--paper-2);
+    --contrast: var(--ink);
+    --on-contrast: var(--fg-on-ink);
+  }
+
+  .band--ink {
+    background: var(--ink);
+    color: var(--fg-on-ink);
+    --rule: var(--line-on-ink);
+    --muted: var(--fg-on-ink-muted);
+    --strong: var(--fg-on-ink);
+    --surface-2: var(--ink-2);
+    --chip-bg: rgb(255 255 255 / 0.03);
+    --contrast: var(--fg-on-ink);
+    --on-contrast: var(--ink);
+  }
+
+  .band--glow {
+    background:
+      radial-gradient(1100px 600px at 25% 0%, rgb(91 61 245 / 0.38), transparent 60%), var(--ink);
+  }
+
+  .band__inner {
+    position: relative;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-left: var(--gutter-l);
+    padding-right: var(--gutter-r);
+    padding-block: var(--section-padding);
+  }
+
+  .band__inner--large {
+    padding-block: clamp(4rem, 10vw, 9rem);
+  }
+
+  .band__inner--compact {
+    padding-block: 1.5rem;
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import Band from '@/components/ui/Band.astro';
+import { getDictionary } from '@/i18n';
+import type { Profile } from '@/lib/content';
+
+interface Props {
+  profile: Profile;
+}
+
+const { profile } = Astro.props;
+const t = getDictionary();
+const year = new Date().getFullYear();
+---
+
+<Band tone="ink" padding="compact" as="footer">
+  <div class="footer">
+    <span>
+      © {year} {profile.name}
+    </span>
+    <span class="footer__links">
+      {profile.links.repository && (
+        <a href={profile.links.repository} target="_blank" rel="noopener noreferrer">
+          {t.footer.source}
+        </a>
+      )}
+      <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
+        {t.footer.builtWith}
+      </a>
+    </span>
+  </div>
+</Band>
+
+<style>
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .footer__links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer__links a:hover {
+    color: var(--accent-soft);
+  }
+</style>

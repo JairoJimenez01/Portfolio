@@ -1,0 +1,149 @@
+---
+import Band from '@/components/ui/Band.astro';
+import Emphasis from '@/components/ui/Emphasis.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Row from '@/components/ui/Row.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import TagList from '@/components/ui/TagList.astro';
+import { getDictionary } from '@/i18n';
+import type { Experience } from '@/lib/content';
+import { formatPeriod, isCurrent } from '@/lib/dates';
+import { SECTION_IDS } from '@/lib/navigation';
+import { experienceSummary } from '@/lib/summary';
+import { revealDelay } from '@/lib/style';
+
+/**
+ * Experiencia con el mismo formato de fila que Proyectos: empresa, puesto y fechas, una frase
+ * de resumen y la tecnología. Los logros detallados quedan plegados tras "Ver logros".
+ */
+interface Props {
+  items: readonly Experience[];
+}
+
+const { items } = Astro.props;
+const t = getDictionary();
+const TITLE_ID = 'experience-title';
+const summary = experienceSummary(
+  items.map((item) => item.period),
+  t.sections.experience,
+);
+---
+
+<Band tone="paper" id={SECTION_IDS.experience} labelledBy={TITLE_ID}>
+  <SectionTitle id={TITLE_ID} title={t.sections.experience.title} meta={summary} />
+
+  <ul class="jobs">
+    {items.map((item, index) => {
+      const highlightsId = `job-${index}-highlights`;
+      const meta = [item.role, formatPeriod(item.period, t.period), item.location];
+      return (
+        <li data-reveal style={revealDelay(index)}>
+          <Row
+            as="article"
+            title={item.company}
+            meta={meta}
+            description={item.summary}
+            marker={isCurrent(item.period) ? 'live' : 'dot'}
+          >
+            <div class="job__details" data-expandable>
+              <button
+                class="job__toggle"
+                type="button"
+                data-expand-toggle
+                aria-controls={highlightsId}
+                hidden
+              >
+                <span data-when="collapsed">
+                  {t.sections.experience.showHighlights} ({item.highlights.length})
+                </span>
+                <span data-when="expanded">{t.sections.experience.hideHighlights}</span>
+                <Icon name="chevron" size="0.95rem" />
+              </button>
+              <ul id={highlightsId} class="job__highlights" data-collapsible>
+                {item.highlights.map((highlight) => (
+                  <li>
+                    <Emphasis text={highlight} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <TagList slot="aside" items={item.stack} align="end" />
+          </Row>
+        </li>
+      );
+    })}
+  </ul>
+</Band>
+
+<style>
+  .jobs {
+    margin-top: clamp(3rem, 7vw, 6rem);
+    border-top: 1px solid var(--rule);
+  }
+
+  .job__details {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 0.4rem;
+  }
+
+  .job__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: 0.4rem;
+    padding: 0.35rem 0;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .job__toggle:hover {
+    color: var(--accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .job__toggle :global(svg) {
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .job__details[data-expanded='true'] .job__toggle :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  .job__highlights {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 62ch;
+    color: var(--muted);
+  }
+
+  .job__highlights li {
+    position: relative;
+    padding-left: 1.2rem;
+  }
+
+  .job__highlights li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .job__highlights :global(strong) {
+    font-weight: 600;
+    color: var(--strong);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .job__toggle :global(svg) {
+      transition: none;
+    }
+  }
+</style>
