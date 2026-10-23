@@ -37,10 +37,11 @@ jobs:
 
       - run: npm run build
 
+      # Solo en pull requests: al fusionar se despliega el mismo código que ya pasó estos tests.
+      # Usan el Google Chrome preinstalado en el runner (ver playwright.config.ts).
       - name: End-to-end tests against the production build
-        run: |
-          npx playwright install --with-deps chromium
-          npm run test:e2e
+        if: github.event_name == 'pull_request'
+        run: npm run test:e2e
         env:
           CI: true
 

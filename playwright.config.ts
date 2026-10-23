@@ -16,6 +16,9 @@ export default defineConfig({
   use: {
     baseURL: `${origin}${BASE_PATH}`,
     trace: 'on-first-retry',
+    // En CI se usa el Google Chrome que ya traen las máquinas de GitHub: no hay que descargar
+    // navegador ni instalar librerías del sistema. En local, el Chromium que instala Playwright.
+    channel: process.env.CI ? 'chrome' : undefined,
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
