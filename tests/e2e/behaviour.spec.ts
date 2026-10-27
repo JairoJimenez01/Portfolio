@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { BASE_PATH } from '../../playwright.config';
+import { BASE_PATH } from '../../src/config/site';
 
 test.describe('Comportamiento', () => {
   test('el JavaScript arranca y activa el scroll con inercia', async ({ page }) => {

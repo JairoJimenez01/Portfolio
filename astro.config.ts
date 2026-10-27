@@ -1,19 +1,14 @@
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
-
-/**
- * Despliegue en GitHub Pages: el sitio se sirve en https://<usuario>.github.io/<repositorio>/.
- * `site` se usa para URLs absolutas (sitemap, Open Graph, canónica) y `base` para las rutas internas.
- */
-const SITE = 'https://jairojimenez01.github.io';
-const BASE = '/Portfolio';
+import { BASE_PATH, SITE_URL } from './src/config/site';
 
 /** Subconjuntos de caracteres necesarios para español y catalán (acentos, ñ, ç, l·l). */
 const SUBSETS: [string, ...string[]] = ['latin', 'latin-ext'];
 
 export default defineConfig({
-  site: SITE,
-  base: BASE,
+  // `site` se usa para URLs absolutas (sitemap, Open Graph, canónica) y `base` para las rutas internas.
+  site: SITE_URL,
+  base: BASE_PATH,
   integrations: [sitemap()],
   // Las fuentes se descargan en el build y se sirven desde el propio dominio:
   // ningún visitante hace peticiones a Google Fonts.

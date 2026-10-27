@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { BASE_PATH } from '../../playwright.config';
+import { BASE_PATH } from '../../src/config/site';
 
 /** Anchos representativos: móviles (360, 390 y 412 de un Pixel 10), tableta, portátil y escritorio. */
 const WIDTHS = [360, 390, 412, 768, 1024, 1440];
