@@ -23,11 +23,10 @@ const { id, title, meta } = Astro.props;
 </div>
 
 <style>
+  /* La nota va siempre debajo del titular: con flex, un titular corto ("SKILLS") la subía a su derecha. */
   .section-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
+    display: grid;
+    justify-items: start;
     gap: 2rem;
   }
 
