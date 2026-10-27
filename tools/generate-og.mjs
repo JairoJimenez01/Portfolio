@@ -7,10 +7,13 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium } from '@playwright/test';
+// Node 24 importa TypeScript sin compilar: así la dirección del sitio tiene una única fuente.
+import { BASE_PATH, SITE_URL } from '../src/config/site.ts';
 
 const PROFILE = resolve('src/content/profile/es.json');
 const OUTPUT = resolve('public/og.png');
-const SITE_LABEL = 'jairojimenez01.github.io/Portfolio';
+/** Dirección tal y como se lee en la imagen: dominio y, si la hay, ruta base sin barra final. */
+const SITE_LABEL = new URL(SITE_URL).host + BASE_PATH.replace(/\/$/, '');
 
 const profile = JSON.parse(await readFile(PROFILE, 'utf8'));
 const escape = (text) => text.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);

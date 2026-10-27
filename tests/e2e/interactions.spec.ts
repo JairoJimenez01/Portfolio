@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { BASE_PATH } from '../../playwright.config';
+import { BASE_PATH } from '../../src/config/site';
 
 /** Debe coincidir con VISIBLE_SKILLS en components/sections/Skills.astro. */
 const VISIBLE_SKILLS = 3;

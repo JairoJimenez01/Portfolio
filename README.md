@@ -2,7 +2,7 @@
 
 Personal portfolio of Jairo Jiménez, backend developer. A single static page meant to be linked from job boards: who I am, what I work with, where I have worked, and how to get in touch.
 
-Live site: https://jairojimenez01.github.io/Portfolio/
+Live site: https://jairojimenez.dev/
 
 ## Stack
 
@@ -66,6 +66,8 @@ Every section reads from `src/content/`. To add a job, a project or a course, ad
 ## Deployment
 
 `.github/workflows/deploy.yml` runs the checks, builds the site and publishes `dist/` to GitHub Pages. Actions are pinned by commit hash and the workflow runs with read-only permissions except for the deploy step. Pull requests run the checks without deploying.
+
+The site is served from the custom domain `jairojimenez.dev`, configured in the repository's Pages settings and pointed at GitHub Pages through DNS. The public URL lives in `src/config/site.ts`; Astro, the browser tests and the Open Graph image all read it from there.
 
 ## License
 

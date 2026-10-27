@@ -1,10 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { BASE_PATH } from './src/config/site';
 
 const PORT = 4321;
-
-/** Debe coincidir con `base` en astro.config.ts (con barra final). */
-export const BASE_PATH = '/Portfolio/';
-
 const origin = `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
