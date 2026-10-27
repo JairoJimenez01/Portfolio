@@ -5,10 +5,9 @@ import Icon from '@/components/ui/Icon.astro';
 import Row from '@/components/ui/Row.astro';
 import SectionTitle from '@/components/ui/SectionTitle.astro';
 import TagList from '@/components/ui/TagList.astro';
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import type { Experience } from '@/lib/content';
 import { formatPeriod, isCurrent } from '@/lib/dates';
-import { SECTION_IDS } from '@/lib/navigation';
 import { experienceSummary } from '@/lib/summary';
 import { revealDelay } from '@/lib/style';
 
@@ -17,11 +16,12 @@ import { revealDelay } from '@/lib/style';
  * de resumen y la tecnología. Los logros detallados quedan plegados tras "Ver logros".
  */
 interface Props {
+  locale: Locale;
   items: readonly Experience[];
 }
 
-const { items } = Astro.props;
-const t = getDictionary();
+const { locale, items } = Astro.props;
+const t = getDictionary(locale);
 const TITLE_ID = 'experience-title';
 const summary = experienceSummary(
   items.map((item) => item.period),
@@ -29,7 +29,7 @@ const summary = experienceSummary(
 );
 ---
 
-<Band tone="paper" id={SECTION_IDS.experience} labelledBy={TITLE_ID}>
+<Band tone="paper" id={t.anchors.experience} labelledBy={TITLE_ID}>
   <SectionTitle id={TITLE_ID} title={t.sections.experience.title} meta={summary} />
 
   <ul class="jobs">

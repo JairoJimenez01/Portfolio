@@ -1,5 +1,6 @@
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
+import { DEFAULT_LOCALE, LOCALE_INFO, LOCALES } from './src/config/locales';
 import { BASE_PATH, SITE_URL } from './src/config/site';
 
 /** Subconjuntos de caracteres necesarios para español y catalán (acentos, ñ, ç, l·l). */
@@ -9,7 +10,16 @@ export default defineConfig({
   // `site` se usa para URLs absolutas (sitemap, Open Graph, canónica) y `base` para las rutas internas.
   site: SITE_URL,
   base: BASE_PATH,
-  integrations: [sitemap()],
+  // Las rutas por idioma las genera pages/[...locale].astro. Al sitemap solo se le indica qué
+  // prefijo corresponde a cada idioma, para que enlace entre sí las tres versiones de la página.
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: DEFAULT_LOCALE,
+        locales: Object.fromEntries(LOCALES.map((locale) => [locale, LOCALE_INFO[locale].tag])),
+      },
+    }),
+  ],
   // Las fuentes se descargan en el build y se sirven desde el propio dominio:
   // ningún visitante hace peticiones a Google Fonts.
   fonts: [

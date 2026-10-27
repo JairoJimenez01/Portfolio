@@ -1,5 +1,15 @@
 {
-  "category": "Calidad",
+  "category": { "es": "Calidad", "en": "Quality", "ca": "Qualitat" },
   "order": 4,
-  "items": ["SOLID", "Clean Architecture", "Arquitectura hexagonal", "DDD", "Testing"]
+  "items": [
+    "SOLID",
+    "Clean Architecture",
+    {
+      "es": "Arquitectura hexagonal",
+      "en": "Hexagonal architecture",
+      "ca": "Arquitectura hexagonal"
+    },
+    "DDD",
+    "Testing"
+  ]
 }

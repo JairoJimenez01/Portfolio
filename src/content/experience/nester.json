@@ -1,13 +1,33 @@
 {
   "company": "Nester",
-  "role": "Full-Stack y Backend Developer",
+  "role": {
+    "es": "Full-Stack y Backend Developer",
+    "en": "Full-Stack and Backend Developer",
+    "ca": "Full-Stack i Backend Developer"
+  },
   "period": { "start": "2021-10", "end": "2026-02" },
-  "location": "Barcelona · Remoto",
-  "summary": "Llevé un SaaS de gestión inmobiliaria de un monolito legacy a microservicios y construí su API principal en PHP y Python.",
+  "location": { "es": "Barcelona · Remoto", "en": "Barcelona · Remote", "ca": "Barcelona · Remot" },
+  "summary": {
+    "es": "Llevé un SaaS de gestión inmobiliaria de un monolito legacy a microservicios y construí su API principal en PHP y Python.",
+    "en": "Took a property management SaaS from a legacy monolith to microservices and built its main API in PHP and Python.",
+    "ca": "Vaig portar un SaaS de gestió immobiliària d'un monòlit legacy a microserveis i en vaig construir l'API principal en PHP i Python."
+  },
   "highlights": [
-    "Diseñé la **API REST principal**: autenticación, middlewares y endpoints para varias aplicaciones web.",
-    "Lideré la migración a **microservicios** con DDD y arquitectura hexagonal, con una reducción drástica de los tiempos de respuesta.",
-    "Desplegué la infraestructura en **AWS** con integración y despliegue continuos."
+    {
+      "es": "Diseñé la **API REST principal**: autenticación, middlewares y endpoints para varias aplicaciones web.",
+      "en": "Designed the **main REST API**: authentication, middleware and endpoints for several web applications.",
+      "ca": "Vaig dissenyar l'**API REST principal**: autenticació, middlewares i endpoints per a diverses aplicacions web."
+    },
+    {
+      "es": "Lideré la migración a **microservicios** con DDD y arquitectura hexagonal, con una reducción drástica de los tiempos de respuesta.",
+      "en": "Led the migration to **microservices** with DDD and hexagonal architecture, drastically reducing response times.",
+      "ca": "Vaig liderar la migració a **microserveis** amb DDD i arquitectura hexagonal, amb una reducció dràstica dels temps de resposta."
+    },
+    {
+      "es": "Desplegué la infraestructura en **AWS** con integración y despliegue continuos.",
+      "en": "Deployed the infrastructure on **AWS** with continuous integration and delivery.",
+      "ca": "Vaig desplegar la infraestructura a **AWS** amb integració i desplegament continus."
+    }
   ],
   "stack": ["Python", "FastAPI", "PHP", "AWS"]
 }

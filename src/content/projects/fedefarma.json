@@ -1,6 +1,10 @@
 {
   "name": "Fedefarma B2B",
-  "description": "E-commerce B2B para el abastecimiento directo de farmacias y ERP propio de la primera distribuidora farmacéutica de Cataluña, en evolución continua.",
+  "description": {
+    "es": "E-commerce B2B para el abastecimiento directo de farmacias y ERP propio de la primera distribuidora farmacéutica de Cataluña, en evolución continua.",
+    "en": "B2B e-commerce for direct pharmacy supply and in-house ERP of Catalonia's leading pharmaceutical distributor, under continuous development.",
+    "ca": "E-commerce B2B per a l'aprovisionament directe de farmàcies i ERP propi de la primera distribuïdora farmacèutica de Catalunya, en evolució contínua."
+  },
   "url": "https://www.fedefarma.com/",
   "stack": ["PHP", "Laravel", "On-Premise"],
   "order": 2

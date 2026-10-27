@@ -2,7 +2,8 @@
  * Registro de iconos sobre una rejilla de 24×24. Añadir un icono es añadir una entrada.
  * Los logotipos van rellenos; el resto son trazos.
  */
-export type IconName = 'linkedin' | 'malt' | 'arrow' | 'copy' | 'download' | 'chevron';
+export type IconName =
+  'linkedin' | 'malt' | 'arrow' | 'copy' | 'download' | 'chevron' | 'globe' | 'check';
 
 interface IconDefinition {
   readonly path: string;
@@ -23,4 +24,10 @@ export const ICONS: Readonly<Record<IconName, IconDefinition>> = {
   },
   download: { path: 'M12 4v11M7 10l5 5 5-5M5 20h14' },
   chevron: { path: 'M6 9l6 6 6-6' },
+  /** Esfera con ecuador y meridianos. */
+  globe: {
+    path: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9',
+    strokeWidth: 1.8,
+  },
+  check: { path: 'M5 12.5l4.5 4.5L19 7.5' },
 };

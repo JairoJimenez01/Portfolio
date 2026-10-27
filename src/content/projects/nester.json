@@ -1,6 +1,10 @@
 {
   "name": "Nester",
-  "description": "SaaS para gestores patrimoniales: administración de propietarios e inquilinos, cobro de rentas, gestión de seguros y facturación.",
+  "description": {
+    "es": "SaaS para gestores patrimoniales: administración de propietarios e inquilinos, cobro de rentas, gestión de seguros y facturación.",
+    "en": "SaaS for property managers: landlord and tenant administration, rent collection, insurance management and invoicing.",
+    "ca": "SaaS per a gestors patrimonials: administració de propietaris i llogaters, cobrament de rendes, gestió d'assegurances i facturació."
+  },
   "url": "https://www.nestersoftware.com/",
   "stack": ["Python", "FastAPI", "PHP", "AWS"],
   "order": 1

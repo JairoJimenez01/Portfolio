@@ -3,11 +3,32 @@
   "role": "Backend Developer",
   "period": { "start": "2026-02", "end": null },
   "location": "Gavà, Barcelona",
-  "summary": "Evoluciono el e-commerce B2B y el ERP que abastecen a miles de farmacias, e impulso la adopción responsable de IA en el equipo.",
+  "summary": {
+    "es": "Evoluciono el e-commerce B2B y el ERP que abastecen a miles de farmacias, e impulso la adopción responsable de IA en el equipo.",
+    "en": "I evolve the B2B e-commerce platform and the ERP that supply thousands of pharmacies, and drive the responsible adoption of AI across the team.",
+    "ca": "Faig evolucionar l'e-commerce B2B i l'ERP que proveeixen milers de farmàcies, i impulso l'adopció responsable de la IA a l'equip."
+  },
   "highlights": [
-    "Implanté un método de trabajo **orientado a IA**: contexto técnico, reglas y directrices centralizadas para usar IA generativa de forma responsable.",
-    "Promoví la exploración de **LLM autoalojados** para garantizar la privacidad del dato, crítica en el sector farmacéutico.",
-    "Desarrollo con **Clean Architecture** y SOLID sobre infraestructura **on-premise**, en coordinación con IT y DevOps."
+    {
+      "es": "Implanté un método de trabajo **orientado a IA**: contexto técnico, reglas y directrices centralizadas para usar IA generativa de forma responsable.",
+      "en": "Introduced an **AI-oriented** way of working: centralized technical context, rules and guidelines for using generative AI responsibly.",
+      "ca": "Vaig implantar un mètode de treball **orientat a la IA**: context tècnic, regles i directrius centralitzades per fer servir la IA generativa de manera responsable."
+    },
+    {
+      "es": "Promoví la exploración de **LLM autoalojados** para garantizar la privacidad del dato, crítica en el sector farmacéutico.",
+      "en": "Championed the exploration of **self-hosted LLMs** to guarantee data privacy, which is critical in the pharmaceutical sector.",
+      "ca": "Vaig promoure l'exploració de **LLM autoallotjats** per garantir la privacitat de les dades, crítica al sector farmacèutic."
+    },
+    {
+      "es": "Desarrollo con **Clean Architecture** y SOLID sobre infraestructura **on-premise**, en coordinación con IT y DevOps.",
+      "en": "Build with **Clean Architecture** and SOLID on **on-premise** infrastructure, in coordination with IT and DevOps.",
+      "ca": "Desenvolupo amb **Clean Architecture** i SOLID sobre infraestructura **on-premise**, en coordinació amb IT i DevOps."
+    }
   ],
-  "stack": ["PHP", "Laravel", "IA generativa", "On-Premise"]
+  "stack": [
+    "PHP",
+    "Laravel",
+    { "es": "IA generativa", "en": "Generative AI", "ca": "IA generativa" },
+    "On-Premise"
+  ]
 }

@@ -1,12 +1,20 @@
 ---
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import { navigationItems } from '@/lib/navigation';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 
 /**
  * Cabecera fija. Con mix-blend-mode: difference el texto blanco se ve negro sobre las bandas
  * claras y blanco sobre las oscuras, sin necesidad de una barra opaca.
+ * En escritorio: marca, secciones y selector de idioma. En móvil: marca y botón de menú; los
+ * idiomas están dentro del menú.
  */
-const t = getDictionary();
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDictionary(locale);
 const items = navigationItems(t);
 ---
 
@@ -20,15 +28,20 @@ const items = navigationItems(t);
         <a href={item.href}>{item.label}</a>
       ))}
     </nav>
-    <button
-      class="header__menu-button"
-      type="button"
-      data-menu-open
-      aria-controls="menu"
-      aria-expanded="false"
-    >
-      {t.nav.open}
-    </button>
+    <div class="header__tools">
+      <div class="header__language">
+        <LanguageSwitcher locale={locale} />
+      </div>
+      <button
+        class="header__menu-button"
+        type="button"
+        data-menu-open
+        aria-controls="menu"
+        aria-expanded="false"
+      >
+        {t.nav.open}
+      </button>
+    </div>
   </div>
 </header>
 
@@ -63,6 +76,8 @@ const items = navigationItems(t);
   .header__nav {
     display: flex;
     gap: 1.75rem;
+    margin-left: auto;
+    margin-right: 0.75rem;
     font-weight: 500;
   }
 
@@ -86,6 +101,12 @@ const items = navigationItems(t);
     transform: scaleX(1);
   }
 
+  .header__tools {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .header__menu-button {
     display: none;
     padding: 0.25rem 0;
@@ -96,7 +117,8 @@ const items = navigationItems(t);
   }
 
   @media (max-width: 860px) {
-    .header__nav {
+    .header__nav,
+    .header__language {
       display: none;
     }
 

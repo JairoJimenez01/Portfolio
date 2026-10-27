@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { BASE_PATH } from '../../src/config/site';
+import { homeOf } from './paths';
 
 /** Debe coincidir con VISIBLE_SKILLS en components/sections/Skills.astro. */
 const VISIBLE_SKILLS = 3;
 
 test.describe('Interacciones', () => {
   test('cada categoría de habilidades muestra tres y despliega el resto', async ({ page }) => {
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     const rows = page.locator('#habilidades [data-expandable]');
     expect(await rows.count()).toBeGreaterThan(0);
 
@@ -27,7 +27,7 @@ test.describe('Interacciones', () => {
   });
 
   test('los logros de cada puesto están plegados y se despliegan', async ({ page }) => {
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     const job = page.locator('#experiencia [data-expandable]').first();
     const highlights = job.locator('ul');
     const toggle = job.getByRole('button');
@@ -39,7 +39,7 @@ test.describe('Interacciones', () => {
   });
 
   test('el contacto ofrece correo, copia y enlaces con nombre accesible', async ({ page }) => {
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     const contact = page.locator('#contacto');
     await expect(contact.locator('a[href^="mailto:"]')).toHaveCount(1);
     await expect(contact.getByRole('button', { name: /Copiar/ })).toBeVisible();
@@ -52,7 +52,7 @@ test.describe('Interacciones', () => {
 
   test('si el JavaScript no carga, todo el contenido queda visible', async ({ page }) => {
     await page.route('**/_astro/*.js', (route) => route.abort());
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     await expect(page.locator('h1')).toHaveCSS('opacity', '1', { timeout: 6000 });
 
     const chips = page.locator('#habilidades li.chip');
@@ -72,7 +72,7 @@ test.describe('Presentación según el dispositivo', () => {
     page.on('request', (request) => {
       if (/\/_astro\/foto\./.test(request.url())) photoRequests.push(request.url());
     });
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     await page.waitForLoadState('networkidle');
 
     await expect(page.getByRole('img', { name: /Retrato/ })).toBeHidden();
@@ -83,7 +83,7 @@ test.describe('Presentación según el dispositivo', () => {
 
   test('en escritorio se muestra la foto', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Solo en escritorio');
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     await expect(page.getByRole('img', { name: /Retrato/ })).toBeVisible();
   });
 });
@@ -107,7 +107,7 @@ async function twinkleSnapshot(page: import('@playwright/test').Page) {
 
 test.describe('Parpadeo del fondo de puntos', () => {
   test('enciende puntos y cambia cuáles con el tiempo', async ({ page }) => {
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     await expect.poll(async () => (await twinkleSnapshot(page)).painted).toBeGreaterThan(0);
     const first = await twinkleSnapshot(page);
     await expect
@@ -117,7 +117,7 @@ test.describe('Parpadeo del fondo de puntos', () => {
 
   test('se queda quieto si el sistema pide movimiento reducido', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto(BASE_PATH);
+    await page.goto(homeOf());
     await page.waitForTimeout(500);
     expect((await twinkleSnapshot(page)).painted).toBe(0);
     // La rejilla en reposo, que es CSS, sigue visible.

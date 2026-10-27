@@ -3,22 +3,22 @@ import Band from '@/components/ui/Band.astro';
 import Row from '@/components/ui/Row.astro';
 import SectionTitle from '@/components/ui/SectionTitle.astro';
 import TagList from '@/components/ui/TagList.astro';
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import type { Project } from '@/lib/content';
-import { SECTION_IDS } from '@/lib/navigation';
 import { revealDelay } from '@/lib/style';
 
 /** Proyectos como filas: nombre, una frase sobre el problema y la tecnología. Con URL, la fila enlaza. */
 interface Props {
+  locale: Locale;
   items: readonly Project[];
 }
 
-const { items } = Astro.props;
-const t = getDictionary();
+const { locale, items } = Astro.props;
+const t = getDictionary(locale);
 const TITLE_ID = 'projects-title';
 ---
 
-<Band tone="ink" id={SECTION_IDS.projects} labelledBy={TITLE_ID}>
+<Band tone="ink" id={t.anchors.projects} labelledBy={TITLE_ID}>
   <SectionTitle id={TITLE_ID} title={t.sections.projects.title} meta={t.sections.projects.meta} />
 
   <ul class="projects">
