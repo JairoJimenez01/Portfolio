@@ -9,6 +9,7 @@ import Icon from '@/components/ui/Icon.astro';
 import { getDictionary } from '@/i18n';
 import { MOBILE_MEDIA_QUERY } from '@/lib/breakpoints';
 import type { Profile } from '@/lib/content';
+import { DOT_GRID } from '@/lib/dot-grid';
 import { SECTION_IDS } from '@/lib/navigation';
 import { revealDelay } from '@/lib/style';
 import { withBase } from '@/lib/urls';
@@ -23,6 +24,9 @@ interface Props {
 
 const { profile } = Astro.props;
 const t = getDictionary();
+
+/** Medidas de la rejilla de puntos: las mismas que usa el canvas del parpadeo. */
+const dotGridStyle = `--dot-spacing:${DOT_GRID.spacing}px;--dot-radius:${DOT_GRID.radius}px`;
 
 /** Ancho máximo de la foto en pantalla; el srcset cubre pantallas de densidad 1x y 2x. */
 const PORTRAIT_WIDTH = 420;
@@ -39,7 +43,9 @@ const EMPTY_IMAGE =
 ---
 
 <Band tone="paper" padding="large" labelledBy="hero-title">
-  <div slot="backdrop" class="dots" data-hero-glow aria-hidden="true"></div>
+  <div slot="backdrop" class="dots" data-hero-glow style={dotGridStyle} aria-hidden="true">
+    <canvas class="dots__twinkle" data-dot-twinkle></canvas>
+  </div>
 
   <div class="hero">
     <div class="hero__copy">
@@ -96,7 +102,13 @@ const EMPTY_IMAGE =
 </Band>
 
 <style>
-  /* Fondo de puntos: una capa gris fija y una capa de acento enmascarada en la posición del puntero. */
+  /*
+   * Fondo de puntos en tres capas:
+   * - ::before, la rejilla gris en reposo (CSS, se ve siempre);
+   * - ::after, la misma rejilla en color de acento, visible solo alrededor del puntero;
+   * - el canvas, donde laten puntos al azar (scripts/dot-twinkle.ts), con el color de `color`.
+   * --dot-spacing y --dot-radius llegan desde lib/dot-grid.ts para que las capas coincidan.
+   */
   .dots {
     position: absolute;
     inset: 0;
@@ -110,8 +122,20 @@ const EMPTY_IMAGE =
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.8px);
-    background-size: 26px 26px;
+    background-image: radial-gradient(
+      circle,
+      var(--dot) var(--dot-radius),
+      transparent calc(var(--dot-radius) + 0.6px)
+    );
+    background-size: var(--dot-spacing) var(--dot-spacing);
+  }
+
+  .dots__twinkle {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--accent);
   }
 
   .dots::before {
@@ -140,7 +164,8 @@ const EMPTY_IMAGE =
     margin-top: 1rem;
     font-size: clamp(2.75rem, 7.5vw, 6rem);
     font-weight: 800;
-    line-height: 0.95;
+    /* Holgura para las tildes de las mayúsculas (É, Ñ): con menos, tocan la línea de arriba. */
+    line-height: 1.08;
     letter-spacing: -0.035em;
     text-transform: uppercase;
   }

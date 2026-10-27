@@ -87,3 +87,40 @@ test.describe('Presentación según el dispositivo', () => {
     await expect(page.getByRole('img', { name: /Retrato/ })).toBeVisible();
   });
 });
+
+/** Huella del canvas del parpadeo: cuántos píxeles tienen color y una firma de dónde están. */
+async function twinkleSnapshot(page: import('@playwright/test').Page) {
+  return page.locator('[data-dot-twinkle]').evaluate((element) => {
+    const canvas = element as HTMLCanvasElement;
+    const { data } = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height);
+    let painted = 0;
+    let signature = 0;
+    for (let i = 3; i < data.length; i += 4) {
+      if ((data[i] ?? 0) > 0) {
+        painted++;
+        signature = (signature * 31 + i) % 1_000_000_007;
+      }
+    }
+    return { painted, signature };
+  });
+}
+
+test.describe('Parpadeo del fondo de puntos', () => {
+  test('enciende puntos y cambia cuáles con el tiempo', async ({ page }) => {
+    await page.goto(BASE_PATH);
+    await expect.poll(async () => (await twinkleSnapshot(page)).painted).toBeGreaterThan(0);
+    const first = await twinkleSnapshot(page);
+    await expect
+      .poll(async () => (await twinkleSnapshot(page)).signature, { timeout: 3000 })
+      .not.toBe(first.signature);
+  });
+
+  test('se queda quieto si el sistema pide movimiento reducido', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(BASE_PATH);
+    await page.waitForTimeout(500);
+    expect((await twinkleSnapshot(page)).painted).toBe(0);
+    // La rejilla en reposo, que es CSS, sigue visible.
+    await expect(page.locator('.dots')).toBeVisible();
+  });
+});

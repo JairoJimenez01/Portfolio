@@ -19,6 +19,10 @@ const items = navigationItems(t);
 </nav>
 
 <style>
+  /*
+   * Cerrado, el menú se recorta hacia arriba y queda oculto también para el teclado y los
+   * lectores de pantalla (visibility). Al cerrar, la visibilidad cambia cuando termina el recorte.
+   */
   .menu {
     position: fixed;
     inset: 0;
@@ -33,13 +37,18 @@ const items = navigationItems(t);
     background: var(--ink);
     color: var(--fg-on-ink);
     clip-path: inset(0 0 100% 0);
-    pointer-events: none;
-    transition: clip-path 0.6s var(--ease-out);
+    visibility: hidden;
+    transition:
+      clip-path 0.6s var(--ease-out),
+      visibility 0s linear 0.6s;
   }
 
   .menu[data-open='true'] {
     clip-path: inset(0 0 0 0);
-    pointer-events: auto;
+    visibility: visible;
+    transition:
+      clip-path 0.6s var(--ease-out),
+      visibility 0s;
   }
 
   .menu__close {
@@ -78,6 +87,7 @@ const items = navigationItems(t);
 
   @media (prefers-reduced-motion: reduce) {
     .menu,
+    .menu[data-open='true'],
     .menu__link {
       transition: none;
     }

@@ -5,6 +5,7 @@
  */
 import type Lenis from 'lenis';
 import { initCopyButtons } from './copy';
+import { initDotTwinkle } from './dot-twinkle';
 import { initExpandables } from './expandable';
 import { initHeroGlow } from './hero-glow';
 import { initMenu } from './menu';
@@ -43,4 +44,5 @@ safely('menú', () =>
   }),
 );
 safely('brillo de la presentación', initHeroGlow);
+safely('parpadeo del fondo de puntos', initDotTwinkle);
 safely('copiar al portapapeles', initCopyButtons);

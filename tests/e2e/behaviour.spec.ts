@@ -23,6 +23,14 @@ test.describe('Comportamiento', () => {
     await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(1);
   });
 
+  test('el menú cerrado no se alcanza con el teclado ni lo leen los lectores de pantalla', async ({
+    page,
+  }) => {
+    await page.goto(BASE_PATH);
+    await expect(page.locator('#menu')).toBeHidden();
+    await expect(page.locator('#menu a').first()).toBeHidden();
+  });
+
   test('el menú móvil abre, navega y cierra', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'Solo en móvil: en escritorio la navegación es visible');
     await page.goto(BASE_PATH);
