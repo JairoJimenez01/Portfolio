@@ -1,6 +1,10 @@
 {
-  "name": "Este portfolio",
-  "description": "Sitio estático con Astro y TypeScript: datos validados con esquemas, tests unitarios y de navegador, y despliegue continuo en GitHub Pages con acciones fijadas por hash.",
+  "name": { "es": "Este portfolio", "en": "This portfolio", "ca": "Aquest portfolio" },
+  "description": {
+    "es": "Sitio estático en tres idiomas con Astro y TypeScript: datos validados con esquemas, tests unitarios y de navegador, y despliegue continuo en GitHub Pages con acciones fijadas por hash.",
+    "en": "Static site in three languages built with Astro and TypeScript: schema-validated data, unit and browser tests, and continuous deployment to GitHub Pages with hash-pinned actions.",
+    "ca": "Lloc estàtic en tres idiomes amb Astro i TypeScript: dades validades amb esquemes, tests unitaris i de navegador, i desplegament continu a GitHub Pages amb accions fixades per hash."
+  },
   "url": "https://github.com/JairoJimenez01/Portfolio",
   "stack": ["Astro", "TypeScript", "Playwright", "CI/CD"],
   "order": 3

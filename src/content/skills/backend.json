@@ -1,5 +1,12 @@
 {
   "category": "Backend",
   "order": 1,
-  "items": ["PHP", "Python", "Laravel", "FastAPI", "APIs REST", "Microservicios"]
+  "items": [
+    "PHP",
+    "Python",
+    "Laravel",
+    "FastAPI",
+    { "es": "APIs REST", "en": "REST APIs", "ca": "APIs REST" },
+    { "es": "Microservicios", "en": "Microservices", "ca": "Microserveis" }
+  ]
 }

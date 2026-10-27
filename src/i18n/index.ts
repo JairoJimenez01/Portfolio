@@ -1,21 +1,19 @@
+import type { Locale } from '@/config/locales';
+import { ca } from './ca';
+import { en } from './en';
 import { es } from './es';
+import type { Dictionary, PluralForms } from './types';
+
+export { DEFAULT_LOCALE, LOCALE_INFO, LOCALES, isLocale, type Locale } from '@/config/locales';
+export type { Dictionary, PluralForms } from './types';
 
 /**
- * Punto de acceso a los textos de interfaz.
- * Un único idioma por ahora: añadir otro es crear su fichero y registrarlo en `dictionaries`.
+ * Punto de acceso a los textos de interfaz. `satisfies` obliga a registrar un diccionario por
+ * cada idioma de config/locales.ts: si se añade un idioma y falta aquí, no compila.
  */
-const dictionaries = { es } as const;
+const dictionaries = { es, en, ca } satisfies Record<Locale, Dictionary>;
 
-export type Locale = keyof typeof dictionaries;
-export type Dictionary = (typeof dictionaries)[Locale];
-export interface PluralForms {
-  readonly one: string;
-  readonly other: string;
-}
-
-export const DEFAULT_LOCALE: Locale = 'es';
-
-export function getDictionary(locale: Locale = DEFAULT_LOCALE): Dictionary {
+export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale];
 }
 

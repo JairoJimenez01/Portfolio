@@ -1,22 +1,50 @@
 ---
-import { getDictionary } from '@/i18n';
-import { navigationItems } from '@/lib/navigation';
+import { getDictionary, type Locale } from '@/i18n';
+import { languageLinks, navigationItems } from '@/lib/navigation';
 
-/** Menú a pantalla completa para móvil. El comportamiento está en scripts/menu.ts. */
-const t = getDictionary();
+/**
+ * Menú a pantalla completa para móvil: secciones arriba e idiomas abajo.
+ * El comportamiento está en scripts/menu.ts.
+ */
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDictionary(locale);
 const items = navigationItems(t);
+const languages = languageLinks(locale, import.meta.env.BASE_URL);
 ---
 
-<nav class="menu" id="menu" data-menu data-open="false" aria-label={t.nav.menuLabel}>
+<div class="menu" id="menu" data-menu data-open="false">
   <button class="menu__close" type="button" data-menu-close>
     {t.nav.close}
   </button>
-  {items.map((item, index) => (
-    <a class="menu__link" href={item.href} style={`--i:${index}`}>
-      {item.label}
-    </a>
-  ))}
-</nav>
+  <nav class="menu__sections" aria-label={t.nav.menuLabel}>
+    {items.map((item, index) => (
+      <a class="menu__link" href={item.href} style={`--i:${index}`}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+  <nav class="menu__languages" aria-label={t.nav.languageLabel} style={`--i:${items.length}`}>
+    <ul class="menu__language-list">
+      {languages.map((language) => (
+        <li>
+          <a
+            class="menu__language"
+            href={language.href}
+            hreflang={language.locale}
+            lang={language.locale}
+            aria-current={language.current ? 'page' : undefined}
+          >
+            {language.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</div>
 
 <style>
   /*
@@ -29,11 +57,12 @@ const items = navigationItems(t);
     z-index: 30;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 2.5rem;
     padding-top: calc(5rem + env(safe-area-inset-top, 0px));
-    padding-bottom: 3rem;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
     padding-left: var(--gutter-l);
     padding-right: var(--gutter-r);
+    overflow-y: auto;
     background: var(--ink);
     color: var(--fg-on-ink);
     clip-path: inset(0 0 100% 0);
@@ -61,13 +90,14 @@ const items = navigationItems(t);
     cursor: pointer;
   }
 
-  .menu__link {
-    font-family: var(--font-display);
-    font-size: clamp(2.25rem, 10vw, 4rem);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
+  .menu__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .menu__link,
+  .menu__languages {
     opacity: 0;
     transform: translateY(30px);
     transition:
@@ -76,19 +106,67 @@ const items = navigationItems(t);
     transition-delay: calc(var(--i) * 70ms + 150ms);
   }
 
-  .menu[data-open='true'] .menu__link {
+  .menu[data-open='true'] .menu__link,
+  .menu[data-open='true'] .menu__languages {
     opacity: 1;
     transform: none;
+  }
+
+  .menu__link {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 10vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
 
   .menu__link:hover {
     color: var(--accent);
   }
 
+  /* Idiomas al pie del menú, como una fila de pastillas. */
+  .menu__languages {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-on-ink);
+  }
+
+  .menu__language-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .menu__language {
+    display: block;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--line-on-ink);
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+    color: var(--fg-on-ink-muted);
+    transition:
+      border-color 0.3s,
+      color 0.3s;
+  }
+
+  .menu__language:hover {
+    border-color: var(--accent);
+    color: var(--fg-on-ink);
+  }
+
+  .menu__language[aria-current='page'] {
+    border-color: var(--fg-on-ink);
+    background: var(--fg-on-ink);
+    color: var(--ink);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .menu,
     .menu[data-open='true'],
-    .menu__link {
+    .menu__link,
+    .menu__languages,
+    .menu__language {
       transition: none;
     }
   }

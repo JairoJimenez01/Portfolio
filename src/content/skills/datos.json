@@ -1,5 +1,14 @@
 {
-  "category": "Datos",
+  "category": { "es": "Datos", "en": "Data", "ca": "Dades" },
   "order": 3,
-  "items": ["SQL", "Caché", "Elasticsearch", "ETL y procesos por lotes"]
+  "items": [
+    "SQL",
+    { "es": "Caché", "en": "Caching", "ca": "Memòria cau" },
+    "Elasticsearch",
+    {
+      "es": "ETL y procesos por lotes",
+      "en": "ETL and batch processing",
+      "ca": "ETL i processos per lots"
+    }
+  ]
 }

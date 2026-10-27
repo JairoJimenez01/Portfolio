@@ -1,5 +1,9 @@
 {
-  "category": "IA",
+  "category": { "es": "IA", "en": "AI", "ca": "IA" },
   "order": 2,
-  "items": ["IA generativa", "LLM autoalojados", "Gobernanza de IA"]
+  "items": [
+    { "es": "IA generativa", "en": "Generative AI", "ca": "IA generativa" },
+    { "es": "LLM autoalojados", "en": "Self-hosted LLMs", "ca": "LLM autoallotjats" },
+    { "es": "Gobernanza de IA", "en": "AI governance", "ca": "Governança de la IA" }
+  ]
 }

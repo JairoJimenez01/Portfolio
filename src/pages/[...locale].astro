@@ -1,0 +1,58 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Contact from '@/components/sections/Contact.astro';
+import Education from '@/components/sections/Education.astro';
+import Experience from '@/components/sections/Experience.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Projects from '@/components/sections/Projects.astro';
+import Skills from '@/components/sections/Skills.astro';
+import Base from '@/layouts/Base.astro';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '@/i18n';
+import { getPortfolioData } from '@/lib/content';
+import { personJsonLd } from '@/lib/seo';
+import { absoluteUrl, localeHomePath } from '@/lib/urls';
+
+/**
+ * Portada en cada idioma. `[...locale]` es un parámetro opcional, como `/{locale?}` en un router
+ * de backend: vacío para el idioma por defecto ("/") y con valor para el resto ("/en/", "/ca/").
+ * Las rutas salen de config/locales.ts con la misma regla que lib/urls.ts → localeHomePath().
+ */
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === DEFAULT_LOCALE ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const data = await getPortfolioData(locale);
+const { profile } = data;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const jsonLd = personJsonLd({
+  name: profile.name,
+  jobTitle: profile.role,
+  url: absoluteUrl(site, import.meta.env.BASE_URL, localeHomePath(locale)),
+  sameAs: [profile.links.linkedin, profile.links.malt],
+  locality: profile.location,
+});
+---
+
+<Base
+  locale={locale}
+  title={profile.seo.title}
+  description={profile.seo.description}
+  jsonLd={jsonLd}
+>
+  <Hero locale={locale} profile={profile} />
+  <Skills locale={locale} groups={data.skills} />
+  <Experience locale={locale} items={data.experience} />
+  <Projects locale={locale} items={data.projects} />
+  <Education locale={locale} items={data.education} languages={profile.languages} />
+  <Contact locale={locale} profile={profile} />
+  <Footer slot="footer" locale={locale} profile={profile} />
+</Base>

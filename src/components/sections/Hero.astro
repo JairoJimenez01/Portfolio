@@ -6,11 +6,10 @@ import Button from '@/components/ui/Button.astro';
 import Emphasis from '@/components/ui/Emphasis.astro';
 import Eyebrow from '@/components/ui/Eyebrow.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import { MOBILE_MEDIA_QUERY } from '@/lib/breakpoints';
 import type { Profile } from '@/lib/content';
 import { DOT_GRID } from '@/lib/dot-grid';
-import { SECTION_IDS } from '@/lib/navigation';
 import { revealDelay } from '@/lib/style';
 import { withBase } from '@/lib/urls';
 
@@ -19,11 +18,12 @@ import { withBase } from '@/lib/urls';
  * En escritorio, texto a la izquierda y foto a la derecha. En móvil, sin foto y centrado.
  */
 interface Props {
+  locale: Locale;
   profile: Profile;
 }
 
-const { profile } = Astro.props;
-const t = getDictionary();
+const { locale, profile } = Astro.props;
+const t = getDictionary(locale);
 
 /** Medidas de la rejilla de puntos: las mismas que usa el canvas del parpadeo. */
 const dotGridStyle = `--dot-spacing:${DOT_GRID.spacing}px;--dot-radius:${DOT_GRID.radius}px`;
@@ -66,12 +66,12 @@ const EMPTY_IMAGE =
       </p>
       <div class="hero__actions" data-reveal style={revealDelay(3)}>
         <div class="hero__cta">
-          <Button href={`#${SECTION_IDS.contact}`} variant="primary">
+          <Button href={`#${t.anchors.contact}`} variant="primary">
             {t.hero.talk}
           </Button>
         </div>
         <Button href={withBase(profile.cv.file)} variant="ghost" newTab mobileIcon="download">
-          {profile.cv.label}
+          {t.hero.downloadCv}
         </Button>
         <Button href={profile.links.linkedin} variant="icon" label="LinkedIn" newTab>
           <Icon name="linkedin" />

@@ -1,5 +1,9 @@
 {
-  "title": "Técnico Superior en Desarrollo de Aplicaciones Web",
+  "title": {
+    "es": "Técnico Superior en Desarrollo de Aplicaciones Web",
+    "en": "Higher Technician in Web Application Development",
+    "ca": "Tècnic Superior en Desenvolupament d'Aplicacions Web"
+  },
   "institution": "Institut Jaume Viladoms · Sabadell",
   "period": { "start": "2019-09", "end": "2021-06" },
   "kind": "degree",

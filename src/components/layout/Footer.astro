@@ -1,14 +1,15 @@
 ---
 import Band from '@/components/ui/Band.astro';
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import type { Profile } from '@/lib/content';
 
 interface Props {
+  locale: Locale;
   profile: Profile;
 }
 
-const { profile } = Astro.props;
-const t = getDictionary();
+const { locale, profile } = Astro.props;
+const t = getDictionary(locale);
 const year = new Date().getFullYear();
 ---
 

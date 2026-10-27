@@ -1,27 +1,43 @@
-import type { Dictionary } from '@/i18n';
-
-/** Identificadores de las secciones: los usan las anclas del menú y los `id` de cada banda. */
-export const SECTION_IDS = {
-  skills: 'habilidades',
-  experience: 'experiencia',
-  projects: 'proyectos',
-  education: 'educacion',
-  contact: 'contacto',
-} as const;
+import { LOCALE_INFO, LOCALES, type Dictionary, type Locale } from '@/i18n';
+import { joinBase, localeHomePath } from './urls';
 
 export interface NavItem {
   readonly href: string;
   readonly label: string;
 }
 
-/** Elementos del menú en el orden en que aparecen las secciones. */
+/**
+ * Elementos del menú en el orden en que aparecen las secciones. Las anclas salen del diccionario
+ * para que la URL esté en el idioma de la página ("/#experiencia", "/en/#experience").
+ */
 export function navigationItems(dictionary: Dictionary): NavItem[] {
-  const { sections } = dictionary;
+  const { anchors, sections } = dictionary;
   return [
-    { href: `#${SECTION_IDS.skills}`, label: sections.skills.title },
-    { href: `#${SECTION_IDS.experience}`, label: sections.experience.title },
-    { href: `#${SECTION_IDS.projects}`, label: sections.projects.title },
-    { href: `#${SECTION_IDS.education}`, label: sections.education.title },
-    { href: `#${SECTION_IDS.contact}`, label: sections.contact.title },
+    { href: `#${anchors.skills}`, label: sections.skills.title },
+    { href: `#${anchors.experience}`, label: sections.experience.title },
+    { href: `#${anchors.projects}`, label: sections.projects.title },
+    { href: `#${anchors.education}`, label: sections.education.title },
+    { href: `#${anchors.contact}`, label: sections.contact.title },
   ];
+}
+
+export interface LanguageLink {
+  readonly locale: Locale;
+  /** Nombre del idioma en el propio idioma ("Català"), igual en todas las páginas. */
+  readonly name: string;
+  readonly href: string;
+  readonly current: boolean;
+}
+
+/**
+ * Enlaces a la portada de cada idioma, para el selector de la cabecera y el del menú móvil.
+ * Rutas relativas a `base`: en local llevan a la versión local, no a la publicada.
+ */
+export function languageLinks(current: Locale, base: string): LanguageLink[] {
+  return LOCALES.map((locale) => ({
+    locale,
+    name: LOCALE_INFO[locale].name,
+    href: joinBase(base, localeHomePath(locale)),
+    current: locale === current,
+  }));
 }

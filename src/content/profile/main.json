@@ -1,0 +1,61 @@
+{
+  "name": "Jairo Jiménez Pruñanosa",
+  "role": "Senior Backend Developer",
+  "keywords": ["PHP", "Python", { "es": "IA", "en": "AI", "ca": "IA" }],
+  "lead": {
+    "es": "Más de cinco años construyendo **APIs** y plataformas críticas con **PHP** y **Python**, aplicando arquitectura limpia e impulsando la adopción responsable de **IA** en equipos de desarrollo.",
+    "en": "Over five years building **APIs** and critical platforms with **PHP** and **Python**, applying clean architecture and driving the responsible adoption of **AI** in development teams.",
+    "ca": "Més de cinc anys construint **APIs** i plataformes crítiques amb **PHP** i **Python**, aplicant arquitectura neta i impulsant l'adopció responsable de la **IA** en equips de desenvolupament."
+  },
+  "location": "Barcelona",
+  "email": "jairojimenezprunanosa@gmail.com",
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/jairo-jim%C3%A9nez-pru%C3%B1anosa/",
+    "malt": "https://www.malt.es/profile/jairojimenezprunanosa",
+    "repository": "https://github.com/JairoJimenez01/Portfolio"
+  },
+  "photo": {
+    "alt": {
+      "es": "Retrato de Jairo Jiménez Pruñanosa con traje negro sobre fondo gris",
+      "en": "Portrait of Jairo Jiménez Pruñanosa in a black suit against a grey background",
+      "ca": "Retrat de Jairo Jiménez Pruñanosa amb vestit negre sobre fons gris"
+    }
+  },
+  "cv": {
+    "file": "cv.pdf"
+  },
+  "contact": {
+    "title": {
+      "es": "¿Construimos algo juntos?",
+      "en": "Shall we build together?",
+      "ca": "Construïm junts?"
+    },
+    "text": {
+      "es": "Abierto a proyectos backend donde la arquitectura y la calidad importen.",
+      "en": "Open to backend projects where architecture and quality matter.",
+      "ca": "Obert a projectes backend on l'arquitectura i la qualitat importin."
+    }
+  },
+  "languages": [
+    {
+      "name": { "es": "Catalán", "en": "Catalan", "ca": "Català" },
+      "level": { "es": "Nativo", "en": "Native", "ca": "Natiu" }
+    },
+    {
+      "name": { "es": "Español", "en": "Spanish", "ca": "Castellà" },
+      "level": { "es": "Nativo", "en": "Native", "ca": "Natiu" }
+    },
+    {
+      "name": { "es": "Inglés", "en": "English", "ca": "Anglès" },
+      "level": "B2"
+    }
+  ],
+  "seo": {
+    "title": "Jairo Jiménez Pruñanosa · Senior Backend Developer",
+    "description": {
+      "es": "Senior Backend Developer: PHP, Python y arquitectura limpia. Experiencia en SaaS inmobiliario y distribución farmacéutica, y adopción responsable de IA.",
+      "en": "Senior Backend Developer: PHP, Python and clean architecture. Experience in real estate SaaS and pharmaceutical distribution, and responsible AI adoption.",
+      "ca": "Senior Backend Developer: PHP, Python i arquitectura neta. Experiència en SaaS immobiliari i distribució farmacèutica, i adopció responsable de la IA."
+    }
+  }
+}

@@ -1,27 +1,27 @@
 ---
 import Band from '@/components/ui/Band.astro';
 import SectionTitle from '@/components/ui/SectionTitle.astro';
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import type { Education, Profile } from '@/lib/content';
 import { formatPeriod } from '@/lib/dates';
-import { SECTION_IDS } from '@/lib/navigation';
 import { revealDelay } from '@/lib/style';
 
 /** Formación en tarjetas equivalentes, más una tarjeta de idiomas. */
 interface Props {
+  locale: Locale;
   items: readonly Education[];
   languages: Profile['languages'];
 }
 
-const { items, languages } = Astro.props;
-const t = getDictionary();
+const { locale, items, languages } = Astro.props;
+const t = getDictionary(locale);
 const TITLE_ID = 'education-title';
 const languagesSummary = languages
   .map((language) => `${language.name} ${language.level}`)
   .join(' · ');
 ---
 
-<Band tone="paper" id={SECTION_IDS.education} labelledBy={TITLE_ID}>
+<Band tone="paper" id={t.anchors.education} labelledBy={TITLE_ID}>
   <SectionTitle id={TITLE_ID} title={t.sections.education.title} meta={t.sections.education.meta} />
 
   <ul class="cards">

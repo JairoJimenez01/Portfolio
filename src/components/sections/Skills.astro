@@ -1,9 +1,8 @@
 ---
 import Band from '@/components/ui/Band.astro';
 import SectionTitle from '@/components/ui/SectionTitle.astro';
-import { getDictionary } from '@/i18n';
+import { getDictionary, type Locale } from '@/i18n';
 import type { SkillGroup } from '@/lib/content';
-import { SECTION_IDS } from '@/lib/navigation';
 import { revealDelay } from '@/lib/style';
 
 /**
@@ -11,18 +10,19 @@ import { revealDelay } from '@/lib/style';
  * tras un chip "+N más": el orden del JSON decide cuáles se ven sin desplegar.
  */
 interface Props {
+  locale: Locale;
   groups: readonly SkillGroup[];
 }
 
 /** Habilidades visibles por categoría antes de desplegar. */
 const VISIBLE_SKILLS = 3;
 
-const { groups } = Astro.props;
-const t = getDictionary();
+const { locale, groups } = Astro.props;
+const t = getDictionary(locale);
 const TITLE_ID = 'skills-title';
 ---
 
-<Band tone="ink" id={SECTION_IDS.skills} labelledBy={TITLE_ID}>
+<Band tone="ink" id={t.anchors.skills} labelledBy={TITLE_ID}>
   <SectionTitle id={TITLE_ID} title={t.sections.skills.title} meta={t.sections.skills.meta} />
 
   <div class="skills">
