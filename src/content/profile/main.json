@@ -22,7 +22,11 @@
     }
   },
   "cv": {
-    "file": "cv.pdf"
+    "file": {
+      "es": "cv/jairo-jimenez-prunanosa-cv-es.pdf",
+      "en": "cv/jairo-jimenez-prunanosa-cv-en.pdf",
+      "ca": "cv/jairo-jimenez-prunanosa-cv-ca.pdf"
+    }
   },
   "contact": {
     "title": {

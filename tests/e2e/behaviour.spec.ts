@@ -10,10 +10,10 @@ test.describe('Comportamiento', () => {
     await expect(page.locator('html')).toHaveClass(/\blenis\b/);
   });
 
-  test('el CV, las imágenes de previsualización y los ficheros públicos se sirven', async ({
+  test('las imágenes de previsualización y los ficheros públicos se sirven', async ({
     request,
   }) => {
-    const files = ['cv.pdf', 'favicon.svg', 'robots.txt', ...LOCALES.map(ogImagePath)];
+    const files = ['favicon.svg', 'robots.txt', ...LOCALES.map(ogImagePath)];
     for (const file of files) {
       const response = await request.get(joinBase(homeOf(), file));
       expect(response.status(), file).toBe(200);

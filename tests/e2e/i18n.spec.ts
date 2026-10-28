@@ -1,10 +1,17 @@
+import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import { BASE_PATH, SITE_URL } from '../../src/config/site';
 import { getDictionary } from '../../src/i18n';
-import { absoluteUrl, localeHomePath, ogImagePath } from '../../src/lib/urls';
+import { localize } from '../../src/lib/localize';
+import { absoluteUrl, joinBase, localeHomePath, ogImagePath } from '../../src/lib/urls';
 import { homeOf, LOCALES } from './paths';
 
 const urlOf = (path: string) => absoluteUrl(SITE_URL, BASE_PATH, path);
+
+/** Perfil tal y como está en el contenido: la fuente de qué CV corresponde a cada idioma. */
+const profile = JSON.parse(readFileSync('src/content/profile/main.json', 'utf8')) as {
+  cv: { file: unknown };
+};
 
 test.describe('Idiomas', () => {
   for (const locale of LOCALES) {
@@ -41,6 +48,22 @@ test.describe('Idiomas', () => {
       await expect(page.getByRole('link', { name: t.hero.downloadCv })).toHaveCount(1);
     });
   }
+
+  test('cada idioma enlaza su propio CV, que se sirve como PDF', async ({ page, request }) => {
+    const served = new Set<string>();
+    for (const locale of LOCALES) {
+      await page.goto(homeOf(locale));
+      const expected = joinBase(BASE_PATH, localize(profile.cv.file, locale) as string);
+      const link = page.getByRole('link', { name: getDictionary(locale).hero.downloadCv });
+      await expect(link).toHaveAttribute('href', expected);
+
+      const response = await request.get(expected);
+      expect(response.status(), expected).toBe(200);
+      expect(response.headers()['content-type']).toContain('application/pdf');
+      served.add(expected);
+    }
+    expect(served.size).toBe(LOCALES.length);
+  });
 
   test('en escritorio, el desplegable de idioma abre, marca el actual y lleva a cada idioma', async ({
     page,
