@@ -30,7 +30,7 @@ src/
   scripts/            browser JavaScript: smooth scroll, reveal on scroll, dot twinkle, expandable blocks, menu, copy button
   styles/             tokens.css (colours, type, rhythm) and global.css (reset, reveal, expandable blocks)
   assets/             optimised portrait
-public/               files served as-is: CV, favicon, one Open Graph image per language
+public/               files served as-is: one CV and one Open Graph image per language, favicon
 tools/                build helpers: prepare the portrait, render the Open Graph image
 tests/                unit tests (Vitest) and end-to-end tests (Playwright)
 ```
@@ -51,7 +51,7 @@ Every section reads from `src/content/`. To add a job, a project or a course, ad
 
 Facts such as dates, URLs and order are written once per entry. Text that changes between languages is written as `{ "es": "…", "en": "…", "ca": "…" }`. Prose fields (summaries, highlights, descriptions) must have all three versions or the build fails; names and technologies can stay as a single string when they are the same in every language.
 
-- `profile/main.json`: name, role, keywords, intro, links, contact and SEO texts.
+- `profile/main.json`: name, role, keywords, intro, links, contact and SEO texts. `cv.file` points to the CV of each language in `public/cv/`; the files have descriptive names because that is the name a recruiter gets when saving them.
 - `skills/`: one file per category, with an `order`. The first three items show by default; the rest fold behind a "+N" chip.
 - `experience/`: one file per position; `period.end: null` means current. `summary` is always visible; `highlights` fold behind "Ver logros".
 - `projects/` and `education/`: one file per entry, with an `order`.
